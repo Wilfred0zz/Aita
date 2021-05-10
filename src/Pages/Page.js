@@ -22,7 +22,7 @@ export const Page = () => {
 
     const handleFormSubmit = () => {
         fetch('/api/create',{
-            method:'Post',
+            method:'POST',
             body:JSON.stringify({
                 username:todo
             }),
