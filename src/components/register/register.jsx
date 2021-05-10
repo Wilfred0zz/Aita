@@ -59,8 +59,8 @@ function Public() {
   const getUser = () => {
     Axios({
       method: "GET",
-      withCredentials: true,
-      url: "http://localhost:4000/user",
+      //withCredentials: true,
+      url: "http://127.0.0.1:5000/api/setcookie",
     }).then((res) => {
       setData(res.data);
       console.log(res.data);

@@ -61,6 +61,9 @@ def setcookie():
         print(user[0])
         resp.set_cookie('userId', str(user[0]))
         return resp
+    else:
+        name = request.cookies['userId']
+        return name
 
 
 @app.route('/api/getcookie')
