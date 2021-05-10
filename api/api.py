@@ -38,27 +38,29 @@ def create():
 def login():
     if mydb:
         try:
-            sql = "SELECT userId, username from userinfo WHERE username = @username"
+            sql = "SELECT userId from userinfo WHERE username = @username"
             mycursor.execute(sql)
             return "succes"
         except:
             return "nope"
 
 
-@app.route('/setcookie', methods=['POST', 'GET'])
+@app.route('/api/setcookie', methods=['POST', 'GET'])
 def setcookie():
-    sql = "SELECT userId, username from userinfo"
+    request_data = request.get_json()
+    sql = "SELECT * from userinfo WHERE username = %s"
+    mycursor.execute(sql, (request_data['username'],))
     if request.method == "POST":
-        user = request.mycursor.execute(sql)
-        resp = make_response(render_template('home.html'))
-        resp.set_cookie('userId', user)
+        user = mycursor.fetchone()
+        resp = make_response('what up crack head')
+        print(user[0])
+        resp.set_cookie('userId', str(user[0]))
+        return resp
 
-    return resp
 
-
-@app.route('/getcookie')
+@app.route('/api/getcookie')
 def getcookie():
-    name = request.cookies.get('userId')
+    name = request.cookies['userId']
     return '<h1>welcome ' + name + '</h1>'
 
 
