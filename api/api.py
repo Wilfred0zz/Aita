@@ -2,7 +2,11 @@ import mysql.connector
 from mysql.connector import authentication
 from flask import Flask, jsonify, request, json, make_response, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+from flask_cors import cross_origin
 app = Flask(__name__)
+CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 mydb = mysql.connector.connect(
     host='aita.cypm9erlnb71.us-east-2.rds.amazonaws.com',
@@ -18,7 +22,7 @@ mycursor = mydb.cursor()
 
 @app.route('/api', methods=['GET'])
 def index():
-    return jsonify([*map(userinfo_serializer, userinfo.query.all())])
+    return
 
 
 @app.route('/api/create', methods=['POST'])
@@ -46,13 +50,14 @@ def login():
 
 
 @app.route('/api/setcookie', methods=['POST', 'GET'])
+@cross_origin()
 def setcookie():
     request_data = request.get_json()
     sql = "SELECT * from userinfo WHERE username = %s"
     mycursor.execute(sql, (request_data['username'],))
     if request.method == "POST":
         user = mycursor.fetchone()
-        resp = make_response('what up crack head')
+        resp = make_response({'blah': 'what up crack head'})
         print(user[0])
         resp.set_cookie('userId', str(user[0]))
         return resp
@@ -61,7 +66,7 @@ def setcookie():
 @app.route('/api/getcookie')
 def getcookie():
     name = request.cookies['userId']
-    return '<h1>welcome ' + name + '</h1>'
+    return name
 
 
 if __name__ == "__main__":

@@ -1,21 +1,23 @@
-import React from 'react'
+import React, { Component } from 'react'
 import logo from './logo.svg';
 import './App.css';
-import {Page} from "./Pages/Page"
 import{
   BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-function App() {
-  return (
-    <div className="App">
-    <Router>
-      <Switch>
-        <Route path='/'>
-          <Page/>
-        </Route>
-      </Switch>
-    </Router>
-    </div>
-  );
+import Regiser from './components/register/register';
+
+class App extends Component{
+  render(){
+    
+    const RegisterComponent = () => <Regiser/>
+    
+    return (
+      <div className="App">
+          <Switch>
+            <Route exact path="/register"render= {RegisterComponent}/>
+          </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
