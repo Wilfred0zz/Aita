@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import loginImg from './../../assets/images/plant.svg';
 import Axios from "axios";
 import { useContext } from 'react';
-import AppContext from './../../appContext';
+import AppContext from '../../appContext';
 import { useHistory } from "react-router-dom";
 import Cookies from 'js-cookie'; 
 
-function Public() {
+function Register () {
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [data, setData] = useState(null);
   const history = useHistory();
   const Auth = useContext(AppContext);
-  
+
   const register = () => {
     Axios({
       method: "POST",
@@ -37,76 +35,39 @@ function Public() {
     });
   };
 
-  const login = () => {
-    Axios({
-      method: "POST",
-      data: {
-        username: loginUsername,
-        password: loginPassword,
-      },
-      //withCredentials: true,
-      url: "http://127.0.0.1:5000/api/setcookie",
-    }).then((res) => {
-      if (res.data === 'failed'){
-        console.log('failed to login')
-        history.push('/')
-      } else {
-        console.log('successfully logged in')
-        Cookies.set(res.data[0], 'loginTrue')
-        Auth.setAuth(true);
-        history.push('/home')
-      }
-    });
-  };
-
-  const getUser = () => {
-    Axios({
-      method: "GET",
-      //withCredentials: true,
-      url: "http://127.0.0.1:5000/api/setcookie",
-    }).then((res) => {
-      setData(res.data);
-      console.log(res.data);
-    });
-  };
-
   return (
-    <div className="public-container">
-      <div>Public</div>
-      <div>
-      <h1>Register</h1>
-      <input
-        placeholder="username"
-        onChange={(e) => setRegisterUsername(e.target.value)}
-      />
-      <input
-        placeholder="password"
-        onChange={(e) => setRegisterPassword(e.target.value)}
-      />
-      <button onClick={register}>Submit</button>
-    </div>
-
-    <div>
-      <h1>Login</h1>
-      <input
-        placeholder="username"
-        onChange={(e) => setLoginUsername(e.target.value)}
-      />
-      <input
-        placeholder="password"
-        onChange={(e) => setLoginPassword(e.target.value)}
-      />
-      <button onClick={login}>Submit</button>
-    </div>
-
-    <div>
-      <h1>Get User</h1>
-      <button onClick={getUser}>Submit</button>
-      {data ? <h1>Welcome Back {data.username}</h1> : null}
-    </div>
+    <div className="base-container">
+      <div className="header">Register</div>
+      <div className="content">
+        <div className="image">
+          <img src={loginImg} />
+        </div>
+        <div className="form">
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input type="text" name="username" placeholder="username" 
+            onChange={(e) => setRegisterUsername(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input type="text" name="password" placeholder="password" 
+            onChange={(e) => setRegisterPassword(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Confirm Password</label>
+            <input type="text" name="password" placeholder="password" />
+          </div>
+        </div>
+      </div>
+      <div className="footer">
+        <button type="button" className="btn"
+        onClick={register}>
+          Register
+        </button>
+      </div>
     </div>
   );
-
 }
-export default Public;
-  
+export default Register;

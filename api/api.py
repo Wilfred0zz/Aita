@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import mysql.connector
 from mysql.connector import authentication
 from flask import Flask, jsonify, request, json, make_response, render_template, url_for
@@ -7,6 +9,8 @@ from flask_cors import cross_origin
 app = Flask(__name__)
 CORS(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+import store
 
 mydb = mysql.connector.connect(
     host='aita.cypm9erlnb71.us-east-2.rds.amazonaws.com',
@@ -19,6 +23,14 @@ print(mydb)
 
 mycursor = mydb.cursor()
 
+def toUserJsonObj(tup):
+    jsonObj = { 
+        "userId" : tup[0],
+        "username" : tup[1],
+        "password" : tup[2],
+        "balance" : tup[3]
+    }
+    return jsonObj
 
 @app.route('/api', methods=['GET'])
 def index():
@@ -45,8 +57,8 @@ def setcookie():
         mycursor.execute(sql, (request_data['username'],))
         if request.method == "POST":
             user = mycursor.fetchone()
-            resp = make_response(jsonify(user))
-            print(resp)
+            userJson = toUserJsonObj(user)
+            resp = make_response(userJson)
             resp.set_cookie('userId', str(user[0]))
             return resp
     except:
