@@ -24,7 +24,6 @@ mycursor = mydb.cursor()
 def index():
     return
 
-
 @app.route('/api/create', methods=['POST'])
 def create():
     request_data = request.get_json()
@@ -37,33 +36,21 @@ def create():
     except:
         return "failed"
 
-
-@app.route('/api/login', methods=['POST', 'GET'])
-def login():
-    if mydb:
-        try:
-            sql = "SELECT userId from userinfo WHERE username = @username"
-            mycursor.execute(sql)
-            return "succes"
-        except:
-            return "nope"
-
-
 @app.route('/api/setcookie', methods=['POST', 'GET'])
 @cross_origin()
 def setcookie():
     request_data = request.get_json()
     sql = "SELECT * from userinfo WHERE username = %s"
-    mycursor.execute(sql, (request_data['username'],))
-    if request.method == "POST":
-        user = mycursor.fetchone()
-        resp = make_response({'blah': 'what up crack head'})
-        print(user[0])
-        resp.set_cookie('userId', str(user[0]))
-        return resp
-    else:
-        name = request.cookies['userId']
-        return name
+    try: 
+        mycursor.execute(sql, (request_data['username'],))
+        if request.method == "POST":
+            user = mycursor.fetchone()
+            resp = make_response(jsonify(user))
+            print(resp)
+            resp.set_cookie('userId', str(user[0]))
+            return resp
+    except:
+        return "failed"
 
 
 @app.route('/api/getcookie')

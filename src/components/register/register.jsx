@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { useContext } from 'react';
-import AppContext from '../register/appContext';
+import AppContext from './../../appContext';
 import { useHistory } from "react-router-dom";
 import Cookies from 'js-cookie'; 
 
@@ -13,7 +13,6 @@ function Public() {
   const [data, setData] = useState(null);
   const history = useHistory();
   const Auth = useContext(AppContext);
-
   
   const register = () => {
     Axios({
@@ -25,12 +24,14 @@ function Public() {
       //withCredentials: true,
       url: "http://127.0.0.1:5000/api/create",
     }).then((res) => {
-        console.log(res)
-      if (res.data != ''){
-        console.log(res.data.username)
-        Cookies.set(res.data.username, 'loginTrue')
-        history.push('/home')
+      console.log(res.data)
+      if (res.data === 'failed'){
+        console.log('failed to register')
+        history.push('/')
       } else {
+        console.log('successfully registered, please login')
+        // Cookies.set(res.data[0], 'loginTrue')
+        // Auth.setAuth(true);
         history.push('/')
       }
     });
@@ -46,12 +47,14 @@ function Public() {
       //withCredentials: true,
       url: "http://127.0.0.1:5000/api/setcookie",
     }).then((res) => {
-      if (res.data != ''){
-        console.log(res.data.username)
-        Cookies.set(res.data.username, 'loginTrue')
-        history.push('/home')
-      } else {
+      if (res.data === 'failed'){
+        console.log('failed to login')
         history.push('/')
+      } else {
+        console.log('successfully logged in')
+        Cookies.set(res.data[0], 'loginTrue')
+        Auth.setAuth(true);
+        history.push('/home')
       }
     });
   };
