@@ -1,23 +1,28 @@
-import React, { Component } from 'react'
-import logo from './logo.svg';
-import './App.css';
-import{
-  BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Regiser from './components/register/register';
+import { Component, useContext, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 
-class App extends Component{
-  render(){
-    
-    const RegisterComponent = () => <Regiser/>
-    
-    return (
-      <div className="App">
-          <Switch>
-            <Route exact path="/register"render= {RegisterComponent}/>
-          </Switch>
-      </div>
-    );
-  }
+import AppContext from './appContext';
+import Routes from './routes';
+
+function App() {
+  const [auth, setAuth] = useState(false);
+  
+  return (
+    <div className="App">
+      <AppContext.Provider value={{auth, setAuth}}>
+        <Router>
+          <Routes/>
+        </Router>
+      </AppContext.Provider>
+    </div>
+  );
 }
 
 export default App;
+
