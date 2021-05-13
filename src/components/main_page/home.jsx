@@ -1,7 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useCallback, createRef } from 'react';
 import Axios from "axios";
+import Modal from './../modal/Modal';
 
 function Home (){
+    const [open, setOpen] = useState(false);
+    const [modalSelected, setModalSelected] = useState('')
+
+    const toggleDialog = useCallback(() => {
+        setOpen(!open);
+      }, [open]);
+
     const testing = () => {
         Axios({
             method: "GET",
@@ -15,7 +23,10 @@ function Home (){
     return(
         <div>
             <div>home</div>
-            <button onClick={testing}>Submit</button>
+
+            <Modal modalSelected={'store'}/>
+            <Modal modalSelected={'inventory'}/>
+
         </div>
     )
 }

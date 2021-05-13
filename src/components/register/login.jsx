@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import loginImg from './../../assets/images/plant.svg';
+// import loginImg from './';
 import Axios from "axios";
 import { useContext } from 'react';
 import AppContext from '../../appContext';
@@ -40,7 +40,7 @@ function Login () {
       <div className="header">Login</div>
       <div className="content">
         <div className="image">
-          <img src={loginImg} />
+          <img src={`/images/plant.svg`} />
         </div>
         <div className="form">
           <div className="form-group">

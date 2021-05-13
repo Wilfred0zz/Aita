@@ -6,11 +6,11 @@ from flask import Flask, jsonify, request, json, make_response, render_template,
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_cors import cross_origin
+from helper import toUserJsonObj
+
 app = Flask(__name__)
 CORS(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-import store
 
 mydb = mysql.connector.connect(
     host='aita.cypm9erlnb71.us-east-2.rds.amazonaws.com',
@@ -35,6 +35,8 @@ def toUserJsonObj(tup):
 @app.route('/api', methods=['GET'])
 def index():
     return
+
+# login, register, & authentication
 
 @app.route('/api/create', methods=['POST'])
 def create():
@@ -69,6 +71,36 @@ def setcookie():
 def getcookie():
     name = request.cookies['userId']
     return name
+
+# get user inventory
+@app.route('/api/userInventory', methods=['GET'])
+def userInventory():
+    print('reached here')
+    try:
+        userId = request.cookies['userId']
+        request_data = request.get_json()
+        sql = "SELECT user, sold, name, description, price FROM userInventory JOIN items ON userInventory.item = items.itemId WHERE user = %s"
+        mycursor.execute(sql, (userId,))
+        userInv = mycursor.fetchall()
+        print((userInv))
+        resp = make_response((jsonify(userInv)))
+        return resp
+    except:
+        return 'failed to get inventory'
+
+# get user inventory
+@app.route('/api/getStoreItems', methods=['GET'])
+def getStoreItems():
+    try:
+        request_data = request.get_json()
+        sql = "SELECT * FROM items"
+        mycursor.execute(sql)
+        allStoreItems = mycursor.fetchall()
+        print('got store items successfully')
+        resp = make_response((jsonify(allStoreItems)))
+        return resp
+    except:
+        return 'failed to get store items'
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import loginImg from './../../assets/images/plant.svg';
 import Axios from "axios";
 import { useContext } from 'react';
 import AppContext from '../../appContext';
@@ -40,7 +39,7 @@ function Register () {
       <div className="header">Register</div>
       <div className="content">
         <div className="image">
-          <img src={loginImg} />
+          <img src={`/images/plant.svg`} />
         </div>
         <div className="form">
           <div className="form-group">
