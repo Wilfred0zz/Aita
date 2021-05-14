@@ -24,6 +24,9 @@ const imageCatalog = {
   22 : 'seeds.svg',
   23 : 'seeds.svg',
   24 : 'seeds.svg',
-  25 : 'seeds.svg'
+  25 : 'seeds.svg',
+  26 : 'seeds.svg',
+  27 : 'seeds.svg',
+  28 : 'seeds.svg',
 }
 export default imageCatalog;

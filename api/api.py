@@ -41,7 +41,7 @@ def index():
 @app.route('/api/create', methods=['POST'])
 def create():
     request_data = request.get_json()
-    sql = "INSERT INTO userinfo (username,password) VALUES (%s,%s)"
+    sql = "INSERT INTO userInfo (username,password) VALUES (%s,%s)"
     try:
         mycursor.execute(
             sql, (request_data['username'], request_data['password'],))
@@ -54,46 +54,47 @@ def create():
 @cross_origin()
 def setcookie():
     request_data = request.get_json()
-    sql = "SELECT * from userinfo WHERE username = %s"
+    sql = "SELECT * from userInfo WHERE username = %s AND password = %s"
     try: 
-        mycursor.execute(sql, (request_data['username'],))
+        mycursor.execute(sql, (request_data['username'], request_data['password']))
         if request.method == "POST":
             user = mycursor.fetchone()
             userJson = toUserJsonObj(user)
             resp = make_response(userJson)
-            resp.set_cookie('userId', str(user[0]))
+            resp.set_cookie('userId', str(user[0]), httponly=False)
             return resp
     except:
         return "failed"
 
 
-@app.route('/api/getcookie')
-def getcookie():
-    name = request.cookies['userId']
-    return name
+@app.route('/api/getCookie')
+def getCookie():
+    userId = request.cookies['userId']
+    return userId
 
 # get user inventory
-@app.route('/api/userInventory', methods=['GET'])
-def userInventory():
-    print('reached here')
+@app.route('/api/getUserInventory', methods=['GET'])
+@cross_origin()
+def getUserInventory():
+    print('reached user Inventory')
     try:
         userId = request.cookies['userId']
         request_data = request.get_json()
-        sql = "SELECT user, sold, name, description, price FROM userInventory JOIN items ON userInventory.item = items.itemId WHERE user = %s"
-        mycursor.execute(sql, (userId,))
-        userInv = mycursor.fetchall()
-        print((userInv))
-        resp = make_response((jsonify(userInv)))
-        return resp
+        # sql = "SELECT itemId, quantity FROM userItemInventory WHERE userId = %s"
+        # mycursor.execute(sql, (userId,))
+        # userInv = mycursor.fetchall()
+        # print((userInv))
+        # resp = make_response((jsonify(userInv)))
+        return 'yay'
     except:
-        return 'failed to get inventory'
+        return 'failed to get inventory for user'
 
-# get user inventory
+# get store items
 @app.route('/api/getStoreItems', methods=['GET'])
 def getStoreItems():
     try:
         request_data = request.get_json()
-        sql = "SELECT * FROM items"
+        sql = "SELECT * FROM itemEncyclopedia"
         mycursor.execute(sql)
         allStoreItems = mycursor.fetchall()
         print('got store items successfully')
@@ -102,6 +103,48 @@ def getStoreItems():
     except:
         return 'failed to get store items'
 
+# buying route
+# @app.route('/api/buyItem', methods=['POST'])
+# def buyItem():
+#     print('reached buy item route')
+#     try:
+#         userId = request.cookies['userId']
+#         request_data = request.get_json()
+#         mycursor.execute(sql, (userId,))
+#         userInv = mycursor.fetchall()
+#         print((userInv))
+#         resp = make_response((jsonify(userInv)))
+#         return resp
+#     except:
+#         return 'failed to get inventory'
+
+@app.route('/api/getItemTransactions', methods=['GET'])
+def getItemTransactions():
+    try:
+        userId = request.cookies['userId']
+        request_data = request.get_json()
+        sql =  "SELECT * FROM itemTransactions WHERE userId = %s"
+        mycursor.execute(sql, (userId))
+        userItemTransactions = mycursor.fetchall()
+        print(userItemTransactions)
+        resp = make_response((jsonify(userItemTransactions)))
+        return resp
+    except:
+        return 'failed to get the item transactions for ' + str(userId)
+
+# @app.route('/api/getPlantTransactions', methods=['GET'])
+# def getItemTransactions():
+#     try:
+#         userId = request.cookies['userId']
+#         request_data = request.get_json()
+#         sql = "SELECT * FROM itemEncyclopedia"
+#         mycursor.execute(sql)
+#         allStoreItems = mycursor.fetchall()
+#         print('got store items successfully')
+#         resp = make_response((jsonify(allStoreItems)))
+#         return resp
+#     except:
+#         return 'failed to get store items'
 
 if __name__ == "__main__":
     app.run(debug=True)

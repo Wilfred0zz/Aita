@@ -26,6 +26,7 @@ function Home (){
 
             <Modal modalSelected={'store'}/>
             <Modal modalSelected={'inventory'}/>
+            <Modal modalSelected={'transactions'}/>
 
         </div>
     )

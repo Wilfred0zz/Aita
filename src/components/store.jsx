@@ -5,7 +5,6 @@ import ImageCatalog from '../assets/imageCatalog';
 
 function Store (props) {
     const [storeItems, setStoreItems] = useState([]);
-    const { onClose } = props
     
     useEffect(() => {
         Axios({
@@ -20,7 +19,6 @@ function Store (props) {
     return (
         <div className="store-container">
             <span>
-                {/* <button style={{marginLeft: "95%"}} onClick={onClose}>close</button> */}
                 <div>STORE</div>
             </span>
             <div className="store-container row">

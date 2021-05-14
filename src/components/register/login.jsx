@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import loginImg from './';
 import Axios from "axios";
 import { useContext } from 'react';
 import AppContext from '../../appContext';
@@ -28,7 +27,7 @@ function Login () {
         history.push('/')
       } else {
         console.log('successfully logged in')
-        Cookies.set(res.data.userId, 'loginTrue')
+        Cookies.set("userId", res.data.userId)
         Auth.setAuth(true);
         history.push('/home')
       }

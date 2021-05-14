@@ -8,13 +8,14 @@ import AppContext from './appContext';
 import Regiser from './components/register/register';
 import Home from './components/main_page/home';
 import Public from './components/register/public';
+import UserInv from './components/userInventory';
 
 const App = () => {
     const Auth = useContext(AppContext);
     const RegisterComponent = () => <Regiser/>
     const HomeComponent = () => <Home/>
     const PublicComponent = () => <Public/>
-    
+
     return(
       <Switch>
         <Route path='/' exact component={PublicComponent}></Route>

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import ModalContentWrapper from "./ModalContentWrapper";
-import Store from './../store';
+import Store from '../store';
+import UserInv from './../userInventory';
 function Modal(props) {
   const modalRef = useRef();
   const [modalSelected, setModalSelected] = useState(props)
@@ -16,8 +17,9 @@ function Modal(props) {
 
       <ModalContentWrapper ref={modalRef}>
         <button onClick={() => modalRef.current.close()}>Close Modal</button>
-        {{ 'inventory': <div>Inventory not created yet</div>,
-          'store': <Store/>
+        {{ 'inventory': <UserInv/>,
+          'store': <Store/>,
+          'transactions' : <div> transactions not made yet</div>
         }[props.modalSelected] || <div>An Error has occurred</div>}
       </ModalContentWrapper>
     </div>
