@@ -1,0 +1,12 @@
+.user-inv-container{
+
+    .user-inv-card{
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        align-items:center;
+        padding: 30px;
+        margin: 10px;
+        background-color: white;
+    }
+}

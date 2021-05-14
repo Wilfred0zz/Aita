@@ -78,26 +78,22 @@ def getCookie():
     return userId
 
 # get user inventory
-
-
 @app.route('/api/getUserInventory', methods=['GET'])
 @cross_origin()
 def getUserInventory():
-    userId = request.cookies['userId']
-    print('reached user Inventory')
-    #request_data = request.get_json()
-    sql = "SELECT itemId, quantity FROM userItemInventory WHERE userId = %s"
-    mycursor.execute(sql, (userId,))
-    userInv = mycursor.fetchall()
-    print((userInv))
-    resp = make_response((jsonify(userInv)))
-    resp.headers.add("Access-Control-Allow-Origin", "*")
-    return resp
-    # return 'failed to get inventory for user'
+    try: 
+        userId = request.cookies['userId']
+        sql = "SELECT userItemInventory.userInventoryId, userItemInventory.itemId, userItemInventory.quantity, itemEncyclopedia.name FROM userItemInventory INNER JOIN itemEncyclopedia ON userItemInventory.itemId=itemEncyclopedia.itemId WHERE userId = %s"
+        mycursor.execute(sql, (userId,))
+        userInv = mycursor.fetchall()
+        print(userInv)
+        resp = make_response((jsonify(userInv)))
+        resp.headers.add("Access-Control-Allow-Origin", "*")
+        return resp
+    except:
+        return "failed to get user inventory"
 
 # get store items
-
-
 @app.route('/api/getStoreItems', methods=['GET'])
 def getStoreItems():
     try:
@@ -110,50 +106,6 @@ def getStoreItems():
         return resp
     except:
         return 'failed to get store items'
-
-# buying route
-# @app.route('/api/buyItem', methods=['POST'])
-# def buyItem():
-#     print('reached buy item route')
-#     try:
-#         userId = request.cookies['userId']
-#         request_data = request.get_json()
-#         mycursor.execute(sql, (userId,))
-#         userInv = mycursor.fetchall()
-#         print((userInv))
-#         resp = make_response((jsonify(userInv)))
-#         return resp
-#     except:
-#         return 'failed to get inventory'
-
-
-@app.route('/api/getItemTransactions', methods=['GET'])
-def getItemTransactions():
-    try:
-        userId = request.cookies['userId']
-        request_data = request.get_json()
-        sql = "SELECT * FROM itemTransactions WHERE userId = %s"
-        mycursor.execute(sql, (userId))
-        userItemTransactions = mycursor.fetchall()
-        print(userItemTransactions)
-        resp = make_response((jsonify(userItemTransactions)))
-        return resp
-    except:
-        return 'failed to get the item transactions for ' + str(userId)
-
-# @app.route('/api/getPlantTransactions', methods=['GET'])
-# def getItemTransactions():
-#     try:
-#         userId = request.cookies['userId']
-#         request_data = request.get_json()
-#         sql = "SELECT * FROM itemEncyclopedia"
-#         mycursor.execute(sql)
-#         allStoreItems = mycursor.fetchall()
-#         print('got store items successfully')
-#         resp = make_response((jsonify(allStoreItems)))
-#         return resp
-#     except:
-#         return 'failed to get store items'
 
 if __name__ == "__main__":
     app.run(debug=True)

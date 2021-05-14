@@ -8,18 +8,19 @@
         flex-wrap: wrap;
         width: 100%;
     }
+
+    .store-card-item {
+        width: 23%;
+        height: 20em;
+        background-color: #ff6f69;
+        margin: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        overflow: hidden;
+        padding: 10px;
+    }    
 }
   
-.store-card-container {
-    width: 22.5%;
-    height: 200px;
-    background-color: #ff6f69;
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    overflow: hidden;
-    padding: 30px;
-}
 

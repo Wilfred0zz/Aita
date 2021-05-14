@@ -23,7 +23,7 @@ function Store (props) {
             </span>
             <div className="store-container row">
                 {storeItems.map((item) => (
-                    <section key={item[0]} className='store-card-container'>
+                    <section key={item[0]} className='store-card-item'>
                         <img style={{"height": '50px'}}
                             src={`/images/${ImageCatalog[`${item[0]}`]}`}
                         />
