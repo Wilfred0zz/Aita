@@ -19,7 +19,7 @@ function Register () {
         password: registerPassword,
       },
       //withCredentials: true,
-      url: "http://127.0.0.1:5000/api/create",
+      url: "api/create",
     }).then((res) => {
       console.log(res.data)
       if (res.data === 'failed'){

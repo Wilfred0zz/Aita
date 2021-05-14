@@ -19,7 +19,7 @@ function Login () {
         password: loginPassword,
       },
       //withCredentials: true,
-      url: "http://127.0.0.1:5000/api/setcookie",
+      url: "/api/setcookie",
     }).then((res) => {
       console.log(res)
       if (res.data === 'failed'){

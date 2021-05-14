@@ -3,20 +3,20 @@ import Axios from "axios";
 
 function UserInv () {
     const [userInv, setUserInv] = useState([]);
-    
-    useEffect(() => {
+
+    const getInv = () => {
         Axios({
             method: "GET",
-            //withCredentials: true,
-            url: "/api/getUserInventory",
+            // withCredentials: false,
+            url: "http://127.0.0.1:5000/api/getUserInventory",
             }).then((res) => {
                 console.log(res)
             });
-    }, []);
+    }
 
     return (
         <div className="user-inv-container">
-           THIS IS INVENTORY
+           <button onClick={getInv}> press to get user Inv</button>
         </div>
     );
 }
