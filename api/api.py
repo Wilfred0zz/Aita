@@ -155,6 +155,5 @@ def getItemTransactions():
 #     except:
 #         return 'failed to get store items'
 
-
 if __name__ == "__main__":
     app.run(debug=True)

@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import ModalContentWrapper from "./ModalContentWrapper";
 import Store from '../store';
 import UserInv from './../userInventory';
+import Transactions from './../transactions';
 function Modal(props) {
   const modalRef = useRef();
   const [modalSelected, setModalSelected] = useState(props)
@@ -19,7 +20,7 @@ function Modal(props) {
         <button onClick={() => modalRef.current.close()}>Close Modal</button>
         {{ 'inventory': <UserInv/>,
           'store': <Store/>,
-          'transactions' : <div> transactions not made yet</div>
+          'transactions' : <Transactions/>
         }[props.modalSelected] || <div>An Error has occurred</div>}
       </ModalContentWrapper>
     </div>

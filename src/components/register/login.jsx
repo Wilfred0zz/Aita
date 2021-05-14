@@ -27,7 +27,7 @@ function Login () {
         history.push('/')
       } else {
         console.log('successfully logged in')
-        Cookies.set("userId", res.data.userId)
+        // Cookies.set("userId", res.data.userId)
         Auth.setAuth(true);
         history.push('/home')
       }
