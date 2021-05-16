@@ -38,7 +38,7 @@ function LRForm () {
   }
 
   return (
-    <div className="App">
+    <div className="login-container">
       <div className="login">
         <div className="container">
           {isLogin && (

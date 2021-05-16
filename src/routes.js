@@ -6,7 +6,7 @@ import ProtectedRoute from './components/protectedRoute';
 import AppContext from './appContext';
 
 import Regiser from './components/register/register';
-import Home from './components/main_page/home';
+import Home from './components/home';
 import Public from './components/register/public';
 import UserInv from './components/userInventory';
 

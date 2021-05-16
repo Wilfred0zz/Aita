@@ -1,15 +1,18 @@
 @import './LRForm.scss';
 @import './style.scss';
-@import './homepage.scss';
+@import './home.scss';
 @import './store.scss';
 @import './modal';
 @import './userInv';
+@import './plants';
+@import './navBar';
 
 html, body {
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    margin: 0;
     height: 100%;
 }
 
-body{
-    margin: 0;
+.App {
+    height: 100vh;
 }

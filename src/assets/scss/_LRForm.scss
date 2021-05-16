@@ -1,26 +1,26 @@
 //Custom Fonts
 // @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
 
-.App {
+.login-container {
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: "Open Sans", sans-serif;
+  padding-top: 7em;
 }
 
 //Login Main Container
 .login {
-  padding-top: 6%;
   width: 27em;
   height: 40em;
-  //min-height: 44em;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 5px;
   position: relative;
   z-index: 99;
+  
   .container {
     display: flex;
     justify-content: center;
@@ -34,7 +34,6 @@
     height: 100%;
     z-index: 99;
     padding: 17px 10px;
-    //transition: transform 200ms ease-in-out;
   }
 
   .right-side {

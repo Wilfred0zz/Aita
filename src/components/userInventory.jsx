@@ -19,7 +19,7 @@ function UserInv () {
     return (
         <div className="user-inv-container">
            <span>
-                <div>USER INVENTORY</div>
+                <div>USER ITEM INVENTORY</div>
             </span>
             <div>
                 { userInv.length !== 0 ? 
@@ -33,8 +33,9 @@ function UserInv () {
                                 <img style={{"height": '70px'}}
                                     src={`/images/${ImageCatalog[`${item[1]}`]}`}
                                 />
+                                <span>{item[5] + " "}</span>
+
                                 <span>{item[3] + " "}</span>
-                                <span>{item[2] + " "}</span>
                                 <span><button>sell</button></span>
                             </div>
                         ))} 

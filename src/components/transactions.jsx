@@ -2,26 +2,21 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import Grid from '@material-ui/core/Grid';
 import ImageCatalog from '../assets/imageCatalog';
-import mockData from './../assets/mockData';
 
 function Transactions () {
     const [plantTrans, setPlantTrans] = useState([]);
     const [itemTrans, setItemTrans] = useState([]);
     
     useEffect(() => {
-        setPlantTrans(mockData.plantTrans)
-        setItemTrans(mockData.itemTrans)
-        console.log(plantTrans)
-        console.log(itemTrans)
-        // setStoreItems()
-        // Axios({
-        //     method: "GET",
-        //     url: "http://127.0.0.1:5000/api/getStoreItems",
-        //     }).then((res) => {
-        //         console.log(res)
-        //         setStoreItems(res.data)
-        //     });
-    });
+        Axios({
+            method: "GET",
+            withCredentials: true,
+            url: "/api/getPlantTrans",
+            }).then((res) => {
+                console.log(res.data)
+                setPlantTrans(res.data)
+            });
+    }, []);
 
     return (
         <div className="transactions-container">

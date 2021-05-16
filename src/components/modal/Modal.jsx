@@ -14,13 +14,16 @@ function Modal(props) {
 
   return (
     <div>
-      <button onClick={openModal}>{props.modalSelected} </button>
+      <li className='nav-options' onClick={openModal}>{props.modalSelected} </li>
 
       <ModalContentWrapper ref={modalRef}>
-        <button onClick={() => modalRef.current.close()}>Close Modal</button>
-        {{ 'inventory': <UserInv/>,
-          'store': <Store/>,
-          'transactions' : <Transactions/>
+        <section className='modal-header'>
+          <button className='close-modal-button' onClick={() => modalRef.current.close()}>Close {props.modalSelected} </button>
+          <div className='modal-title'> {props.modalSelected} </div>
+        </section>
+        {{ 'Inventory': <UserInv/>,
+          'Store': <Store/>,
+          'Transactions' : <Transactions/>
         }[props.modalSelected] || <div>An Error has occurred</div>}
       </ModalContentWrapper>
     </div>

@@ -5,40 +5,40 @@
   align-items: center;
 
   //This is the header text
-  .header {
+  .LR-header {
     font-size: 24px;
     font-family: "Open Sans", sans-serif;
   }
 
-  .content {
+  .LR-content {
     display: flex;
     flex-direction: column;
 
-    .image {
+    .LR-image-cnt {
       width: 8em;
       margin-top: 4.5%;
       margin-left: 27.5%;
-      img {
+      .LR-img {
         width: 100%;
         height: 100%;
       }
     }
 
-    .form {
+    .LR-form {
       margin-top: .5em;
       display: flex;
       flex-direction: column;
       align-items: center;
 
-      .form-group {
+      .LR-form-group {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         width: fit-content;
-        label {
+        .LR-label {
           font-size: 20px;
         }
-        input {
+        .LR-input {
           margin-top: 6px;
           min-width: 18em;
           height: 37px;
@@ -64,7 +64,7 @@
     }
   }
 
-  .footer {
+  .LR-footer {
     margin-top: 3em;
   }
 }

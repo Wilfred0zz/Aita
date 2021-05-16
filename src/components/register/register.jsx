@@ -36,31 +36,31 @@ function Register () {
 
   return (
     <div className="base-container">
-      <div className="header">Register</div>
-      <div className="content">
-        <div className="image">
-          <img src={`/images/plant.svg`} />
+      <div className="LR-header">Register</div>
+      <div className="LR-content">
+        <div className="LR-image-cnt">
+          <img className='LR-img' src={`/images/plant.svg`} />
         </div>
-        <div className="form">
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input type="text" name="username" placeholder="username" 
+        <div className="LR-form">
+          <div className="LR-form-group">
+            <label className='LR-label' htmlFor="username">Username</label>
+            <input className='LR-input' type="text" name="username" placeholder="username" 
             onChange={(e) => setRegisterUsername(e.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input type="text" name="password" placeholder="password" 
+          <div className="LR-form-group">
+            <label className='LR-label' htmlFor="password">Password</label>
+            <input className='LR-input' type="text" name="password" placeholder="password" 
             onChange={(e) => setRegisterPassword(e.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Confirm Password</label>
-            <input type="text" name="password" placeholder="password" />
+          <div className="LR-form-group">
+            <label className='LR-label' htmlFor="password">Confirm Password</label>
+            <input className='LR-input' type="text" name="password" placeholder="password" />
           </div>
         </div>
       </div>
-      <div className="footer">
+      <div className="LR-footer">
         <button type="button" className="btn"
         onClick={register}>
           Register

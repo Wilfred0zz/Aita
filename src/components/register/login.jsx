@@ -3,7 +3,6 @@ import Axios from "axios";
 import { useContext } from 'react';
 import AppContext from '../../appContext';
 import { useHistory } from "react-router-dom";
-import Cookies from 'js-cookie'; 
 
 function Login () {
   const [loginUsername, setLoginUsername] = useState("");
@@ -36,27 +35,27 @@ function Login () {
 
   return (
     <div className="base-container">
-      <div className="header">Login</div>
-      <div className="content">
-        <div className="image">
-          <img src={`/images/plant.svg`} />
+      <div className="LR-header">Login</div>
+      <div className="LR-content">
+        <div className="LR-image-cnt">
+          <img className='LR-img' src={`/images/plant.svg`} />
         </div>
-        <div className="form">
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input type="text" name="username" placeholder="username" 
+        <div className="LR-form">
+          <div className="LR-form-group">
+            <label className='LR-label' htmlFor="username">Username</label>
+            <input className='LR-input' type="text" name="username" placeholder="username" 
             onChange={(e) => setLoginUsername(e.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" placeholder="password" 
+          <div className="LR-form-group">
+            <label className='LR-label' htmlFor="password">Password</label>
+            <input className='LR-input' type="password" name="password" placeholder="password" 
             onChange={(e) => setLoginPassword(e.target.value)}
             />
           </div>
         </div>
       </div>
-      <div className="footer">
+      <div className="LR-footer">
         <button type="button" className="btn"
         onClick={login}>
           Login

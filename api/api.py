@@ -77,13 +77,20 @@ def getCookie():
     userId = request.cookies['userId']
     return userId
 
+# logout route
+@app.route('/api/logout', methods=['GET'])
+def logout():
+    resp = make_response('logged out')
+    resp.delete_cookie('userId')
+    return resp
+
 # get user inventory
 @app.route('/api/getUserInventory', methods=['GET'])
 @cross_origin()
 def getUserInventory():
     try: 
         userId = request.cookies['userId']
-        sql = "SELECT userItemInventory.userInventoryId, userItemInventory.itemId, userItemInventory.quantity, itemEncyclopedia.name FROM userItemInventory INNER JOIN itemEncyclopedia ON userItemInventory.itemId=itemEncyclopedia.itemId WHERE userId = %s"
+        sql = "SELECT userItemInventory.*, itemEncyclopedia.name FROM userItemInventory INNER JOIN itemEncyclopedia ON userItemInventory.itemId=itemEncyclopedia.itemId WHERE userId = %s"
         mycursor.execute(sql, (userId,))
         userInv = mycursor.fetchall()
         print(userInv)
@@ -92,6 +99,22 @@ def getUserInventory():
         return resp
     except:
         return "failed to get user inventory"
+
+# get PLANTS
+@app.route('/api/getPlants', methods=['GET'])
+@cross_origin()
+def getPlants():
+    try: 
+        userId = request.cookies['userId']
+        sql = "SELECT plants.*, itemEncyclopedia.name FROM plants INNER JOIN itemEncyclopedia ON plants.itemId=itemEncyclopedia.itemId WHERE userId = %s;"
+        mycursor.execute(sql, (userId,))
+        userPlants = mycursor.fetchall()
+        print(userPlants)
+        resp = make_response((jsonify(userPlants)))
+        resp.headers.add("Access-Control-Allow-Origin", "*")
+        return resp
+    except:
+        return "failed to get plants"
 
 # get store items
 @app.route('/api/getStoreItems', methods=['GET'])
@@ -106,6 +129,23 @@ def getStoreItems():
         return resp
     except:
         return 'failed to get store items'
+
+# GET PLANT TRANSACTIONS
+@app.route('/api/getPlantTrans', methods=['GET'])
+@cross_origin()
+def getPlantTrans():
+    try: 
+        userId = request.cookies['userId']
+        sql = "SELECT plantTransactions.*, plants.name, plants.itemId, itemEncyclopedia.name, ROUND(itemEncyclopedia.price*plants.priceEffect, 2) as price FROM plantTransactions INNER JOIN plants ON plants.plantId=plantTransactions.plantId INNER JOIN itemEncyclopedia ON plants.itemId = itemEncyclopedia.itemId WHERE plantTransactions.userId = %s;"
+        mycursor.execute(sql, (userId,))
+        plantsTrans = mycursor.fetchall()
+        print(plantsTrans)
+        resp = make_response((jsonify(plantsTrans)))
+        resp.headers.add("Access-Control-Allow-Origin", "*")
+        return resp
+    except:
+        return "failed to get plant transactions"
+        
 
 if __name__ == "__main__":
     app.run(debug=True)
