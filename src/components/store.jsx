@@ -12,7 +12,7 @@ function Store () {
     useEffect(() => {
         Axios({
             method: "GET",
-            url: "http://127.0.0.1:5000/api/getStoreItems",
+            url: "/api/getStoreItems",
             }).then((res) => {
                 console.log(res)
                 setStoreItems(res.data)
