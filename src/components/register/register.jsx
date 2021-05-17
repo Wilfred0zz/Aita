@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import { useContext } from 'react';
-import AppContext from '../../appContext';
-import { useHistory } from "react-router-dom";
-import Cookies from 'js-cookie'; 
+import { useHistory } from "react-router-dom"; 
 
 function Register () {
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const history = useHistory();
-  const Auth = useContext(AppContext);
 
   const register = () => {
     Axios({

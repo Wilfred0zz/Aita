@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import { useContext } from 'react';
-import AppContext from '../../appContext';
 import { useHistory } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
 import AlertHandler from './../alert';
@@ -11,7 +9,6 @@ function Login () {
   const [loginPassword, setLoginPassword] = useState("");
   const [open, setOpen] = React.useState(true);
   const history = useHistory();
-  const Auth = useContext(AppContext);
   // 4 seconds?
   const duration = 3500;
   const [visible, setAlertVisibility] = useState(false);
@@ -34,7 +31,7 @@ function Login () {
 
       } else {
         console.log('successfully logged in')
-        Auth.setAuth(true);
+        // Auth.setAuth(true);
         history.push('/home')
       }
     });

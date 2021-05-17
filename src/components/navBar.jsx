@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import Axios from "axios";
 import Modal from './modal/Modal';
-import { useContext } from 'react';
-import AppContext from '../appContext';
 import { useHistory } from "react-router-dom";
 
 function Navbar (){
-    const [open, setOpen] = useState(false);
-    const [modalSelected, setModalSelected] = useState('')
     const history = useHistory();
-    const Auth = useContext(AppContext);
 
     const logout = () => {
         Axios({
@@ -17,7 +12,6 @@ function Navbar (){
             url: "/api/logout",
         }).then((res) => {
             console.log('successfully logged out')
-            Auth.setAuth(false);
             history.push('/')
         });
     };

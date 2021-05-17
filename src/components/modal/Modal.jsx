@@ -32,7 +32,7 @@ function Modal(props) {
           'Store': <Store/>,
           'Transactions' : <Transactions/>,
           'Profile' : <Profile/>,
-          'New Plant': <NewPlant/>
+          'New Plant': <NewPlant/>,
         }[props.modalSelected] || <div>An Error has occurred</div>}
       </ModalContentWrapper>
     </div>

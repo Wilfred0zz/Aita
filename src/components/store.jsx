@@ -60,7 +60,6 @@ function Store () {
                         <div>{item[1]}</div>
                         <div>{item[3]}</div>
                         <div>{item[4]}</div>
-                        {/* onClick={setBuy(item[0], arrItems[item[0]], )} */}
                         <span>
                             <button onClick={(e)=> decrement(item[0])}>-</button>
                             {arrItems[item[0]]}
