@@ -292,11 +292,12 @@ def sellItem():
     itemsprice = "SELECT sellingPrice from plantEncyclopedia WHERE itemId = %s"
     mycursor.execute(itemsprice, (request_data['itemId'],))
     price = mycursor.fetchall()[0][0]
+    print(price)
     mycursor.execute(
         "UPDATE userInfo SET balance = balance + %s WHERE userId = %s", (price, userId,))
     mydb.commit()
-    deletePlant = "UPDATE plants SET isSold = 1 WHERE plantsId = %s"
-    mycursor.execute(deletePlant, (request_data['plantId']))
+    deletePlant = "UPDATE plants SET isSold = 1 WHERE plantId = %s"
+    mycursor.execute(deletePlant, (request_data['plantId'],))
     mydb.commit()
     soldPlant = mycursor.fetchall()
     print(soldPlant)
