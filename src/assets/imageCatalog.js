@@ -1,13 +1,13 @@
 // diction matching itemId to img-path
 const imageCatalog = {
-  1 : 'watering-can.svg',
+  1 : 'pot.svg',
   2 : 'watering-can.svg',
-  3 : 'watering-can.svg',
-  4 : 'watering-can.svg',
-  5 : 'fertilizer.svg',
-  6 : 'fertilizer.svg',
-  7 : 'fertilizer.svg',
-  8 : 'fertilizer.svg',
+  3 : 'fertilizer.svg',
+  4 : 'seeds.svg',
+  5 : 'seeds.svg',
+  6 : 'seeds.svg',
+  7 : 'seeds.svg',
+  8 : 'seeds.svg',
   9 : 'seeds.svg',
   10 : 'seeds.svg',
   11 : 'seeds.svg',
@@ -23,10 +23,5 @@ const imageCatalog = {
   21 : 'seeds.svg',
   22 : 'seeds.svg',
   23 : 'seeds.svg',
-  24 : 'seeds.svg',
-  25 : 'seeds.svg',
-  26 : 'seeds.svg',
-  27 : 'seeds.svg',
-  28 : 'seeds.svg',
 }
 export default imageCatalog;

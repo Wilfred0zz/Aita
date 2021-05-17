@@ -6,7 +6,6 @@ function Plants () {
     const [userPlants, setUserPlants] = useState([]);
     const [dt, setDt] = useState(new Date().toLocaleString());
 
-    
     useEffect(() => {
         Axios({
             method: "GET",
@@ -35,11 +34,10 @@ function Plants () {
                                 <img style={{"height": '70px'}}
                                     src={`/images/${ImageCatalog[`${plant[1]}`]}`}
                                 />
-                                <div>{'Name: '}{plant[9] + " "}</div>
+                                <div>{'Name: '}{plant[8] + " "}</div>
+                                <div>{'Plant Species: '}{plant[9] + " "}</div>
                                 <div>{'First time Planted: '}{plant[3] + " "}</div>
                                 <div>{'Last time Watered: '}{plant[4] + " "}</div>
-                                <div>{'Growth speed: '}{plant[6] + "x"}</div>
-                                <div>{'Price effect: '}{plant[7] + "x"}</div>
                                 {/* {dt} */}
                                 <div><button>water</button><button>apply item</button><button>sell</button></div>
 

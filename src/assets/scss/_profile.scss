@@ -1,0 +1,11 @@
+.prof-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 10%;
+
+    .prof-cont{
+        padding-top: 2em;
+    }
+}

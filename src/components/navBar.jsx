@@ -32,6 +32,7 @@ function Navbar (){
             <Modal modalSelected={'Store'}/>
             <Modal modalSelected={'Inventory'}/>
             <Modal modalSelected={'Transactions'}/>
+            <Modal modalSelected={'Profile'}/>
             <div>
                 <li className='nav-options' 
                 style={{paddingRight:'2.5em'}}

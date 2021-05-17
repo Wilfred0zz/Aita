@@ -3,6 +3,9 @@ import ModalContentWrapper from "./ModalContentWrapper";
 import Store from '../store';
 import UserInv from './../userInventory';
 import Transactions from './../transactions';
+import Profile from './../profile';
+import NewPlant from './../newPlant';
+
 function Modal(props) {
   const modalRef = useRef();
   const [modalSelected, setModalSelected] = useState(props)
@@ -18,12 +21,18 @@ function Modal(props) {
 
       <ModalContentWrapper ref={modalRef}>
         <section className='modal-header'>
-          <button className='close-modal-button' onClick={() => modalRef.current.close()}>Close {props.modalSelected} </button>
+          <img src={'/images/exit.svg'} 
+            style={{height:'30px', padding: '10px'}} 
+            className='close-modal-button' 
+            onClick={() => modalRef.current.close()}
+          />
           <div className='modal-title'> {props.modalSelected} </div>
         </section>
         {{ 'Inventory': <UserInv/>,
           'Store': <Store/>,
-          'Transactions' : <Transactions/>
+          'Transactions' : <Transactions/>,
+          'Profile' : <Profile/>,
+          'New Plant': <NewPlant/>
         }[props.modalSelected] || <div>An Error has occurred</div>}
       </ModalContentWrapper>
     </div>

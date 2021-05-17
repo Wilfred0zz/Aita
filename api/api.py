@@ -101,6 +101,22 @@ def getUserInventory():
     except:
         return "failed to get user inventory"
 
+# get user profile
+@app.route('/api/getProfile', methods=['GET'])
+@cross_origin()
+def getProfile():
+    try: 
+        userId = request.cookies['userId']
+        sql = "SELECT userInfo.userId, userInfo.username, userInfo.balance FROM userInfo WHERE userInfo.userId = %s"
+        mycursor.execute(sql, (userId,))
+        userProf = mycursor.fetchall()
+        print(userProf)
+        resp = make_response((jsonify(userProf)))
+        resp.headers.add("Access-Control-Allow-Origin", "*")
+        return resp
+    except:
+        return "failed to get user user profile"
+
 # get PLANTS
 @app.route('/api/getPlants', methods=['GET'])
 @cross_origin()
@@ -137,7 +153,7 @@ def getStoreItems():
 def getPlantTrans():
     try: 
         userId = request.cookies['userId']
-        sql = "SELECT plantTransactions.*, plants.name, plants.itemId, itemEncyclopedia.name, ROUND(itemEncyclopedia.price*plants.priceEffect, 2) as price FROM plantTransactions INNER JOIN plants ON plants.plantId=plantTransactions.plantId INNER JOIN itemEncyclopedia ON plants.itemId = itemEncyclopedia.itemId WHERE plantTransactions.userId = %s;"
+        sql = "SELECT plantTransactions.*, plants.name, plants.itemId, itemEncyclopedia.name, plantEncyclopedia.sellingPrice FROM plantTransactions INNER JOIN plants ON plants.plantId=plantTransactions.plantId INNER JOIN itemEncyclopedia ON plants.itemId = itemEncyclopedia.itemId INNER JOIN plantEncyclopedia on plantEncyclopedia.itemId = itemEncyclopedia.itemId WHERE plantTransactions.userId = %s;"
         mycursor.execute(sql, (userId,))
         plantsTrans = mycursor.fetchall()
         print(plantsTrans)
@@ -146,6 +162,22 @@ def getPlantTrans():
         return resp
     except:
         return "failed to get plant transactions"
+
+# GET PLANT TRANSACTIONS
+@app.route('/api/getItemTrans', methods=['GET'])
+@cross_origin()
+def getItemTrans():
+    try: 
+        userId = request.cookies['userId']
+        sql = "SELECT itemTransactions.*, itemEncyclopedia.name, itemEncyclopedia.price, ROUND(itemEncyclopedia.price * itemTransactions.quantity, 2) as amount FROM itemTransactions INNER JOIN itemEncyclopedia ON itemTransactions.itemId=itemEncyclopedia.itemId WHERE itemTransactions.userId = %s"
+        mycursor.execute(sql, (userId,))
+        itemTrans = mycursor.fetchall()
+        print(itemTrans)
+        resp = make_response((jsonify(itemTrans)))
+        resp.headers.add("Access-Control-Allow-Origin", "*")
+        return resp
+    except:
+        return "failed to get item transactions"
         
 # buying route
 @app.route('/api/buyItem', methods=['POST'])
@@ -154,23 +186,42 @@ def buyItem():
     request_data = request.get_json()
     userId = request.cookies['userId']
     comparison = "SELECT balance FROM userInfo WHERE userId= %s"
-    mycursor.execute(comparison, (userId,))
+    try:
+        mycursor.execute(comparison, (userId,))
+        balance = mycursor.fetchall()[0][0]
+    except:
+        print('could not get balance')
+        return make_response('not enough balance', 400)
 
-    balance = mycursor.fetchall()[0][0]
     itemsprice = "SELECT price from itemEncyclopedia WHERE itemId = %s"
     mycursor.execute(itemsprice, (request_data['itemId'],))
-    price = mycursor.fetchall()[0][0]
-
+    price = mycursor.fetchall()[0][0] * request_data['quantity']
     if balance < price:
-        return Response('NOT ENOUGH FUNDS BOIII', status=400)
+        print('not enough balance')
+        errorRes = make_response('not enough balance', 400)
+        return errorRes
 
-    transactions = "INSERT INTO itemTransactions(userId, quantity, amount, itemId) VALUES(%s, %s,  %s, %s);"
-    userInventory = "INSERT INTO userItemInventory(itemId,userId, quantity) VALUES (%s,%s, %s);"
+    transactions = "INSERT INTO itemTransactions(userId, quantity, itemId) VALUES(%s, %s,  %s);"
+    
+    ifWeHaveItemSql = "SELECT quantity from userItemInventory WHERE userId = %s AND itemId = %s"
+    row_count = mycursor.execute(ifWeHaveItemSql, (userId, request_data['itemId'],))
+    ifWeHaveItem = mycursor.fetchone()
+    if ifWeHaveItem is None:
+        print('does not exist')
+        userInventory = "INSERT INTO userItemInventory(itemId, userId, quantity) VALUES (%s,%s, %s);"
+        mycursor.execute(
+            userInventory, (request_data['itemId'], userId, request_data['quantity']))
+        mydb.commit()
+    else:
+        newQuantity = int(ifWeHaveItem[0])+request_data['quantity']
+        print(newQuantity)
+        userInventory = "UPDATE userItemInventory SET quantity=(%s) WHERE userId = %s AND itemId = %s;"
+        mycursor.execute(
+            userInventory, (newQuantity, userId, request_data['itemId']))
+        mydb.commit()
+        
     mycursor.execute(transactions,
-                     (userId, request_data['quantity'], price, request_data['itemId']))
-    mydb.commit()
-    mycursor.execute(
-        userInventory, (request_data['itemId'], userId, request_data['quantity']))
+                     (userId, request_data['quantity'], request_data['itemId'],))
     mydb.commit()
     mycursor.execute(
         "UPDATE userInfo SET balance = balance - %s WHERE userId = %s", (price, userId))
@@ -179,7 +230,6 @@ def buyItem():
     print((userInv))
     resp = make_response((jsonify(userInv)))
     return resp
-    # return 'failed to get inventory'
 
 if __name__ == "__main__":
     app.run(debug=True)

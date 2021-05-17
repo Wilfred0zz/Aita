@@ -17,23 +17,23 @@ function UserInv () {
     }, []);
 
     return (
-        <div className="user-inv-container">
+        <div className="card-container">
            <span>
                 <div>USER ITEM INVENTORY</div>
             </span>
             <div>
                 { userInv.length !== 0 ? 
                     <div>
-                        <div className='user-inv-card'>
+                        <div className='card'>
                             <span style={{paddingLeft: '30%'}}>item</span>
                             <span style={{paddingRight: '22%'}}>quantity</span>
                         </div>
                         {userInv.map((item) => (
-                            <div key={item[0]} className='user-inv-card'>
+                            <div key={item[0]} className='card'>
                                 <img style={{"height": '70px'}}
                                     src={`/images/${ImageCatalog[`${item[1]}`]}`}
                                 />
-                                <span>{item[5] + " "}</span>
+                                <span>{item[4] + " "}</span>
 
                                 <span>{item[3] + " "}</span>
                                 <span><button>sell</button></span>

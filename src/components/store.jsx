@@ -32,6 +32,22 @@ function Store () {
         }
     };
 
+    const buyItem = (itemId, quantity) => {
+        console.log('itemId:' + itemId + ' quantity: ' + quantity)
+        Axios({
+          method: "POST",
+          data: {
+            itemId: itemId,
+            quantity: quantity
+          },
+          //withCredentials: true,
+          url: "/api/buyItem",
+        }).then((res) => {
+          console.log(res)
+        }).catch(error => {
+            console.log(error.response);
+        });
+    };
 
     return (
         <div className="store-container">
@@ -44,12 +60,13 @@ function Store () {
                         <div>{item[1]}</div>
                         <div>{item[3]}</div>
                         <div>{item[4]}</div>
-                        <button>buy</button> 
+                        {/* onClick={setBuy(item[0], arrItems[item[0]], )} */}
                         <span>
                             <button onClick={(e)=> decrement(item[0])}>-</button>
                             {arrItems[item[0]]}
                             <button onClick={(e)=> increment(item[0])}>+</button>
                         </span>
+                        <button onClick={(e) => buyItem(item[0], arrItems[item[0]])}>buy</button> 
                     </section>
                 ))}
             </div>
