@@ -214,5 +214,21 @@ def sellItem():
     return resp
 
 
+@app.route('/api/water', methods=['POST'])
+def water():
+    userId = request.cookies['userId']
+    request_data = request.get_json()
+    updateWater = "UPDATE plants SET lastTimeWatered = NOW() WHERE plantId = %s"
+    mycursor.execute(updateWater, (request_data['plantId'],))
+    mydb.commit()
+    updateWaterQuantity = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId = 2 AND userId = %s"
+    mycursor.execute(updateWaterQuantity, (userId,))
+    mydb.commit()
+    updatedWater = mycursor.fetchall()
+    print(updatedWater)
+    resp = make_response((jsonify(updatedWater)))
+    return resp
+
+
 if __name__ == "__main__":
     app.run(debug=True)
