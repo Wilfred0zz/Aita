@@ -150,18 +150,15 @@ def buyItem():
 
 
 @app.route('/api/getItemTransactions', methods=['GET'])
-@cross_origin
 def getItemTransactions():
-    try:
-        userId = request.cookies['userId']
-        sql = "SELECT * FROM itemTransactions WHERE userId = %s"
-        mycursor.execute(sql, (userId,))
-        userItemTransactions = mycursor.fetchall()
-        print(userItemTransactions)
-        resp = make_response((jsonify(userItemTransactions)))
-        return resp
-    except:
-        return 'failed to get the item transactions for ' + str(userId)
+    userId = request.cookies['userId']
+    sql = "SELECT * FROM itemTransactions WHERE userId = %s"
+    mycursor.execute(sql, (userId,))
+    userItemTransactions = mycursor.fetchall()
+    print(userItemTransactions)
+    resp = make_response((jsonify(userItemTransactions)))
+    return resp
+    return 'failed to get the item transactions for ' + str(userId)
 
 
 @app.route('/api/plantTransactions', methods=['GET'])
@@ -176,6 +173,44 @@ def plantTransactions():
         return resp
     except:
         return 'Cannot reach users plants transactions'
+
+
+@app.route('/api/plantSeed', methods=['POST'])
+def plantSeed():
+    userId = request.cookies['userId']
+    request_data = request.get_json()
+    addToPlants = "INSERT INTO plants(itemId, userId) VALUES (%s, %s)"
+    mycursor.execute(addToPlants, (request_data['itemId'], userId,))
+    mydb.commit()
+    updateUserInventory = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE userInventoryId = %s"
+    mycursor.execute(updateUserInventory, (request_data['userInventoryId'],))
+    mydb.commit()
+    updateTools = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId = 1 OR itemId = 2 OR itemId = 3 AND userId = %s"
+    mycursor.execute(updateTools, (userId,))
+    mydb.commit()
+    planted = mycursor.fetchall()
+    print(planted)
+    resp = make_response((jsonify(planted)))
+    return "planted"
+
+
+@app.route('/api/sellPlant', methods=['POST'])
+def sellItem():
+    userId = request.cookies['userId']
+    request_data = request.get_json()
+    itemsprice = "SELECT sellingPrice from plantEncyclopedia WHERE itemId = %s"
+    mycursor.execute(itemsprice, (request_data['itemId'],))
+    price = mycursor.fetchall()[0][0]
+    mycursor.execute(
+        "UPDATE userInfo SET balance = balance + %s WHERE userId = %s", (price, userId,))
+    mydb.commit()
+    deletePlant = "UPDATE plants SET isSold = 1 WHERE plantsId = %s"
+    mycursor.execute(deletePlant, (request_data['plantId']))
+    mydb.commit()
+    soldPlant = mycursor.fetchall()
+    print(soldPlant)
+    resp = make_response((jsonify(soldPlant)))
+    return resp
 
 
 if __name__ == "__main__":
