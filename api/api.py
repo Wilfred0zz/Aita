@@ -79,6 +79,8 @@ def getCookie():
     return userId
 
 # logout route
+
+
 @app.route('/api/logout', methods=['GET'])
 def logout():
     resp = make_response('logged out')
@@ -86,10 +88,12 @@ def logout():
     return resp
 
 # get user inventory
+
+
 @app.route('/api/getUserInventory', methods=['GET'])
 @cross_origin()
 def getUserInventory():
-    try: 
+    try:
         userId = request.cookies['userId']
         sql = "SELECT userItemInventory.*, itemEncyclopedia.name FROM userItemInventory INNER JOIN itemEncyclopedia ON userItemInventory.itemId=itemEncyclopedia.itemId WHERE userId = %s"
         mycursor.execute(sql, (userId,))
@@ -102,10 +106,12 @@ def getUserInventory():
         return "failed to get user inventory"
 
 # get user profile
+
+
 @app.route('/api/getProfile', methods=['GET'])
 @cross_origin()
 def getProfile():
-    try: 
+    try:
         userId = request.cookies['userId']
         sql = "SELECT userInfo.userId, userInfo.username, userInfo.balance FROM userInfo WHERE userInfo.userId = %s"
         mycursor.execute(sql, (userId,))
@@ -118,10 +124,12 @@ def getProfile():
         return "failed to get user user profile"
 
 # get PLANTS
+
+
 @app.route('/api/getPlants', methods=['GET'])
 @cross_origin()
 def getPlants():
-    try: 
+    try:
         userId = request.cookies['userId']
         sql = "SELECT plants.*, itemEncyclopedia.name, plantEncyclopedia.timeTakesToGrow, plantEncyclopedia.waterInterval FROM plants INNER JOIN itemEncyclopedia ON plants.itemId=itemEncyclopedia.itemId INNER JOIN plantEncyclopedia ON itemEncyclopedia.itemId=plantEncyclopedia.itemId WHERE userId = %s;"
         mycursor.execute(sql, (userId,))
@@ -134,6 +142,8 @@ def getPlants():
         return "failed to get plants"
 
 # get store items
+
+
 @app.route('/api/getStoreItems', methods=['GET'])
 def getStoreItems():
     try:
@@ -148,10 +158,12 @@ def getStoreItems():
         return 'failed to get store items'
 
 # GET PLANT TRANSACTIONS
+
+
 @app.route('/api/getPlantTrans', methods=['GET'])
 @cross_origin()
 def getPlantTrans():
-    try: 
+    try:
         userId = request.cookies['userId']
         sql = "SELECT plantTransactions.*, plants.name, plants.itemId, itemEncyclopedia.name, plantEncyclopedia.sellingPrice FROM plantTransactions INNER JOIN plants ON plants.plantId=plantTransactions.plantId INNER JOIN itemEncyclopedia ON plants.itemId = itemEncyclopedia.itemId INNER JOIN plantEncyclopedia on plantEncyclopedia.itemId = itemEncyclopedia.itemId WHERE plantTransactions.userId = %s;"
         mycursor.execute(sql, (userId,))
@@ -164,10 +176,12 @@ def getPlantTrans():
         return "failed to get plant transactions"
 
 # GET PLANT TRANSACTIONS
+
+
 @app.route('/api/getItemTrans', methods=['GET'])
 @cross_origin()
 def getItemTrans():
-    try: 
+    try:
         userId = request.cookies['userId']
         sql = "SELECT itemTransactions.*, itemEncyclopedia.name, itemEncyclopedia.price, ROUND(itemEncyclopedia.price * itemTransactions.quantity, 2) as amount FROM itemTransactions INNER JOIN itemEncyclopedia ON itemTransactions.itemId=itemEncyclopedia.itemId WHERE itemTransactions.userId = %s"
         mycursor.execute(sql, (userId,))
@@ -178,8 +192,10 @@ def getItemTrans():
         return resp
     except:
         return "failed to get item transactions"
-        
+
 # buying route
+
+
 @app.route('/api/buyItem', methods=['POST'])
 @cross_origin()
 def buyItem():
@@ -202,9 +218,10 @@ def buyItem():
         return errorRes
 
     transactions = "INSERT INTO itemTransactions(userId, quantity, itemId) VALUES(%s, %s,  %s);"
-    
+
     ifWeHaveItemSql = "SELECT quantity from userItemInventory WHERE userId = %s AND itemId = %s"
-    row_count = mycursor.execute(ifWeHaveItemSql, (userId, request_data['itemId'],))
+    row_count = mycursor.execute(
+        ifWeHaveItemSql, (userId, request_data['itemId'],))
     ifWeHaveItem = mycursor.fetchone()
     if ifWeHaveItem is None:
         print('does not exist')
@@ -219,7 +236,7 @@ def buyItem():
         mycursor.execute(
             userInventory, (newQuantity, userId, request_data['itemId']))
         mydb.commit()
-        
+
     mycursor.execute(transactions,
                      (userId, request_data['quantity'], request_data['itemId'],))
     mydb.commit()
@@ -231,12 +248,14 @@ def buyItem():
     resp = make_response((jsonify(userInv)))
     return resp
 
+
 @app.route('/api/plantSeed', methods=['POST'])
 def plantSeed():
     userId = request.cookies['userId']
     request_data = request.get_json()
     addToPlants = "INSERT INTO plants(itemId, userId, name) VALUES (%s, %s, %s)"
-    mycursor.execute(addToPlants, (request_data['itemId'], userId, request_data['plantName']))
+    mycursor.execute(
+        addToPlants, (request_data['itemId'], userId, request_data['plantName']))
     mydb.commit()
 
     seedCntSql = "SELECT quantity FROM userItemInventory WHERE itemId=%s AND userId=%s"
@@ -277,7 +296,8 @@ def plantSeed():
     mycursor.execute(updateUserInventorySoil, (userId,))
     mydb.commit()
     updateUserInventorySeed = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId=%s AND userId=%s"
-    mycursor.execute(updateUserInventorySeed, (request_data['itemId'], userId,))
+    mycursor.execute(updateUserInventorySeed,
+                     (request_data['itemId'], userId,))
     mydb.commit()
 
     successRes = "successfully planted %s" % (request_data['plantName'])
@@ -334,34 +354,34 @@ def water():
 
 
 @app.route('/api/grown', methods=['POST'])
-@cross_origin()
 def grown():
     userId = request.cookies['userId']
     request_data = request.get_json()
-    plantId = request_data['plantId']
-    try:
-        sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s and userId = %s"
-        mycursor.execute(sql, (plantId, userId,))
-        mydb.commit()
-        print(plantId) 
-        print('is okay')
-        resp = make_response((jsonify(plantId)))
-        return resp
-    except:
-        return 'error happened updating grown'
+    plantIds = request_data['plantId']
+    data = [(plant, userId) for plant in plantIds]
+    sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s and userId = %s"
+    mycursor.executemany(sql, data,)
+    mydb.commit()
+    print(request_data)
+    print('is okay')
+    resp = make_response((jsonify(plantIds)))
+    return resp
     return 'plant is grown'
 
 
 @app.route('/api/isAlive', methods=['POST'])
 def isAlive():
+    userId = request.cookies['userId']
     request_data = request.get_json()
-    try:
-        sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
-        mycursor.execute(sql, (request_data['plantId'],))
-        mydb.commit()
-    except:
-        return 'error happened updating alive'
-    return 'plant is dead'
+    plantIds = request_data['plantId']
+    data = [(plant, userId) for plant in plantIds]
+    sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
+    mycursor.executemany(sql, data,)
+    mydb.commit()
+    print(request_data)
+    print('is okay')
+    resp = make_response((jsonify(plantIds)))
+    return resp
 
 
 if __name__ == "__main__":
