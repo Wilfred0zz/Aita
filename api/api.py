@@ -332,38 +332,34 @@ def water():
     resp = make_response((jsonify(updatedWater)))
     return 'watered'
 
-
 @app.route('/api/grown', methods=['POST'])
-@cross_origin()
 def grown():
     userId = request.cookies['userId']
     request_data = request.get_json()
-    plantId = request_data['plantId']
-    # return 'fdsfsdf'
-    try:
-        sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s and userId = %s"
-        mycursor.execute(sql, (plantId, userId,))
-        mydb.commit()
-        print(plantId) 
-        print('is okay')
-        resp = make_response((jsonify(plantId)))
-        return resp
-    except:
-        return 'error happened updating grown'
+    plantIds = request_data['plantId']
+    data = [(plant, userId) for plant in plantIds]
+    sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s and userId = %s"
+    mycursor.executemany(sql, data,)
+    mydb.commit()
+    print(request_data)
+    print('is okay')
+    resp = make_response((jsonify(plantIds)))
+    return resp
     return 'plant is grown'
-
 
 @app.route('/api/isAlive', methods=['POST'])
 def isAlive():
+    userId = request.cookies['userId']
     request_data = request.get_json()
-    try:
-        sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
-        mycursor.execute(sql, (request_data['plantId'],))
-        mydb.commit()
-    except:
-        return 'error happened updating alive'
-    return 'plant is dead'
-
+    plantIds = request_data['plantId']
+    data = [(plant, userId) for plant in plantIds]
+    sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
+    mycursor.executemany(sql, data,)
+    mydb.commit()
+    print(request_data)
+    print('is okay')
+    resp = make_response((jsonify(plantIds)))
+    return resp
 
 if __name__ == "__main__":
     app.run(debug=True)
