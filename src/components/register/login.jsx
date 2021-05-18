@@ -7,11 +7,12 @@ import AlertHandler from './../alert';
 function Login () {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [open, setOpen] = React.useState(true);
   const history = useHistory();
-  // 4 seconds?
+  
+  const [open, setOpen] = React.useState(true);
   const duration = 3500;
   const [visible, setAlertVisibility] = useState(false);
+  // const [isSuccess, setIsSuccess] = useState(false);
 
   const login = () => {
     Axios({
@@ -28,10 +29,8 @@ function Login () {
         console.log('failed to login')
         history.push('/')
         setAlertVisibility(true)
-
       } else {
         console.log('successfully logged in')
-        // Auth.setAuth(true);
         history.push('/home')
       }
     });

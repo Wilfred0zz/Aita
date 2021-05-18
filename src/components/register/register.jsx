@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import { useHistory } from "react-router-dom"; 
+import Alert from '@material-ui/lab/Alert';
+import AlertHandler from './../alert';
 
 function Register () {
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const history = useHistory();
+
+  const [open, setOpen] = React.useState(true);
+  const duration = 3500;
+  const [visible, setAlertVisibility] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const register = () => {
     Axios({
@@ -20,18 +27,29 @@ function Register () {
       console.log(res.data)
       if (res.data === 'failed'){
         console.log('failed to register')
-        history.push('/')
+        setAlertVisibility(true)
       } else {
         console.log('successfully registered, please login')
-        // Cookies.set(res.data[0], 'loginTrue')
-        // Auth.setAuth(true);
-        history.push('/')
+        setIsSuccess(true)
+        setAlertVisibility(true)
+        setTimeout(() => { window.location.reload(); }, 2000);
       }
     });
   };
 
   return (
     <div className="base-container">
+       <AlertHandler
+          visible={visible}
+          duration={duration}
+          onDurationEnd={setAlertVisibility}
+        >
+          {
+            isSuccess ?
+            <Alert severity='success'> You have successfully registered! We'll redirect you back to the login page. Please login. </Alert>
+            : <Alert severity='error'> Unable to register, try a different username </Alert>
+          }   
+      </AlertHandler>
       <div className="LR-header">Register</div>
       <div className="LR-content">
         <div className="LR-image-cnt">

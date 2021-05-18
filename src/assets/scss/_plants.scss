@@ -6,8 +6,9 @@
     // padding-top: 3%;
     height:100%;
     // padding: 2%;
-    
+
     &.row{
+        overflow-y: visible;
         display: flex;
         flex-wrap: wrap;
         width: 100%;

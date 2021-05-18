@@ -29,14 +29,19 @@ function UserInv () {
                             <span style={{paddingRight: '22%'}}>quantity</span>
                         </div>
                         {userInv.map((item) => (
-                            <div key={item[0]} className='card'>
-                                <img style={{"height": '70px'}}
-                                    src={`/images/${ImageCatalog[`${item[1]}`]}`}
-                                />
-                                <span>{item[4] + " "}</span>
-
-                                <span>{item[3] + " "}</span>
-                                <span><button>sell</button></span>
+                            <div key={item[0]}>
+                                {
+                                    item[3] >= 1 &&
+                                    <div className='card'>
+                                        <img style={{"height": '70px'}}
+                                            src={`/images/${ImageCatalog[`${item[1]}`]}`}
+                                        />
+                                        <span>{item[4] + " "}</span>
+        
+                                        <span>{item[3] + " "}</span>
+                                        <span><button>sell</button></span>
+                                    </div>
+                                }
                             </div>
                         ))} 
                     </div> :

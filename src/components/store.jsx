@@ -58,6 +58,7 @@ function Store () {
                             src={`/images/${ImageCatalog[`${item[0]}`]}`}
                         />
                         <div>{item[1]}</div>
+                        <div>${item[2]}</div>
                         <div>{item[3]}</div>
                         <div>{item[4]}</div>
                         <span>
