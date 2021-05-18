@@ -152,13 +152,15 @@ def buyItem():
 @app.route('/api/getItemTransactions', methods=['GET'])
 def getItemTransactions():
     userId = request.cookies['userId']
-    sql = "SELECT * FROM itemTransactions WHERE userId = %s"
-    mycursor.execute(sql, (userId,))
-    userItemTransactions = mycursor.fetchall()
-    print(userItemTransactions)
-    resp = make_response((jsonify(userItemTransactions)))
-    return resp
-    return 'failed to get the item transactions for ' + str(userId)
+    try:
+        sql = "SELECT * FROM itemTransactions WHERE userId = %s"
+        mycursor.execute(sql, (userId,))
+        userItemTransactions = mycursor.fetchall()
+        print(userItemTransactions)
+        resp = make_response((jsonify(userItemTransactions)))
+        return resp
+    except:
+        return 'failed to get the item transactions for ' + str(userId)
 
 
 @app.route('/api/plantTransactions', methods=['GET'])
@@ -179,73 +181,89 @@ def plantTransactions():
 def plantSeed():
     userId = request.cookies['userId']
     request_data = request.get_json()
-    addToPlants = "INSERT INTO plants(itemId, userId) VALUES (%s, %s)"
-    mycursor.execute(addToPlants, (request_data['itemId'], userId,))
-    mydb.commit()
-    updateUserInventory = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE userInventoryId = %s"
-    mycursor.execute(updateUserInventory, (request_data['userInventoryId'],))
-    mydb.commit()
-    updateTools = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId = 1 OR itemId = 2 OR itemId = 3 AND userId = %s"
-    mycursor.execute(updateTools, (userId,))
-    mydb.commit()
-    planted = mycursor.fetchall()
-    print(planted)
-    resp = make_response((jsonify(planted)))
-    return "planted"
+    try:
+        addToPlants = "INSERT INTO plants(itemId, userId) VALUES (%s, %s)"
+        mycursor.execute(addToPlants, (request_data['itemId'], userId,))
+        mydb.commit()
+        updateUserInventory = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE userInventoryId = %s"
+        mycursor.execute(updateUserInventory,
+                         (request_data['userInventoryId'],))
+        mydb.commit()
+        updateTools = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId = 1 OR itemId = 2 OR itemId = 3 AND userId = %s"
+        mycursor.execute(updateTools, (userId,))
+        mydb.commit()
+        planted = mycursor.fetchall()
+        print(planted)
+        resp = make_response((jsonify(planted)))
+        return "planted"
+    except:
+        return "can't plant"
 
 
 @app.route('/api/sellPlant', methods=['POST'])
 def sellItem():
     userId = request.cookies['userId']
     request_data = request.get_json()
-    itemsprice = "SELECT sellingPrice from plantEncyclopedia WHERE itemId = %s"
-    mycursor.execute(itemsprice, (request_data['itemId'],))
-    price = mycursor.fetchall()[0][0]
-    print(price)
-    mycursor.execute(
-        "UPDATE userInfo SET balance = balance + %s WHERE userId = %s", (price, userId,))
-    mydb.commit()
-    deletePlant = "UPDATE plants SET isSold = 1 WHERE plantId = %s"
-    mycursor.execute(deletePlant, (request_data['plantId'],))
-    mydb.commit()
-    soldPlant = mycursor.fetchall()
-    print(soldPlant)
-    resp = make_response((jsonify(soldPlant)))
-    return resp
+    try:
+        itemsprice = "SELECT sellingPrice from plantEncyclopedia WHERE itemId = %s"
+        mycursor.execute(itemsprice, (request_data['itemId'],))
+        price = mycursor.fetchall()[0][0]
+        print(price)
+        mycursor.execute(
+            "UPDATE userInfo SET balance = balance + %s WHERE userId = %s", (price, userId,))
+        mydb.commit()
+        deletePlant = "UPDATE plants SET isSold = 1 WHERE plantId = %s"
+        mycursor.execute(deletePlant, (request_data['plantId'],))
+        mydb.commit()
+        soldPlant = mycursor.fetchall()
+        print(soldPlant)
+        resp = make_response((jsonify(soldPlant)))
+        return resp
+    except:
+        return "Can't sell plant"
 
 
 @app.route('/api/water', methods=['POST'])
 def water():
     userId = request.cookies['userId']
     request_data = request.get_json()
-    updateWater = "UPDATE plants SET lastTimeWatered = NOW() WHERE plantId = %s"
-    mycursor.execute(updateWater, (request_data['plantId'],))
-    mydb.commit()
-    updateWaterQuantity = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId = 2 AND userId = %s"
-    mycursor.execute(updateWaterQuantity, (userId,))
-    mydb.commit()
-    updatedWater = mycursor.fetchall()
-    print(updatedWater)
-    resp = make_response((jsonify(updatedWater)))
-    return 'watered'
+    try:
+        updateWater = "UPDATE plants SET lastTimeWatered = NOW() WHERE plantId = %s"
+        mycursor.execute(updateWater, (request_data['plantId'],))
+        mydb.commit()
+        updateWaterQuantity = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId = 2 AND userId = %s"
+        mycursor.execute(updateWaterQuantity, (userId,))
+        mydb.commit()
+        updatedWater = mycursor.fetchall()
+        print(updatedWater)
+        resp = make_response((jsonify(updatedWater)))
+        return 'watered'
+    except:
+        return "can't water"
 
 
 @app.route('/api/grown', methods=['POST'])
 def grown():
-    request_data = request.get_json()
-    sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s"
-    mycursor.execute(sql, (request_data['plantId'],))
-    mydb.commit()
-    return 'plant is grown'
+    try:
+        request_data = request.get_json()
+        sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s"
+        mycursor.execute(sql, (request_data['plantId'],))
+        mydb.commit()
+        return 'plant is grown'
+    except:
+        "can't view plant growth"
 
 
 @app.route('/api/isAlive', methods=['POST'])
 def isAlive():
-    request_data = request.get_json()
-    sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
-    mycursor.execute(sql, (request_data['plantId'],))
-    mydb.commit()
-    return 'plant is dead'
+    try:
+        request_data = request.get_json()
+        sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
+        mycursor.execute(sql, (request_data['plantId'],))
+        mydb.commit()
+        return 'plant is dead'
+    except:
+        return "Cannot find plant"
 
 
 if __name__ == "__main__":
