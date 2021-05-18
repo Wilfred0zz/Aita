@@ -7,7 +7,6 @@ import AlertHandler from './../alert';
 function Register () {
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
-  const history = useHistory();
 
   const [open, setOpen] = React.useState(true);
   const duration = 3500;
@@ -53,7 +52,7 @@ function Register () {
       <div className="LR-header">Register</div>
       <div className="LR-content">
         <div className="LR-image-cnt">
-          <img className='LR-img' src={`/images/plant.svg`} />
+          <img alt='register-img' className='LR-img' src={`/images/plant.svg`} />
         </div>
         <div className="LR-form">
           <div className="LR-form-group">

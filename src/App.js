@@ -1,10 +1,6 @@
-import { Component, useContext, useState } from 'react';
+import { useState } from 'react';
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect
+  BrowserRouter as Router
 } from "react-router-dom";
 
 import AppContext from './appContext';

@@ -126,9 +126,9 @@ def getPlants():
         sql = "SELECT plants.*, itemEncyclopedia.name, plantEncyclopedia.timeTakesToGrow, plantEncyclopedia.waterInterval FROM plants INNER JOIN itemEncyclopedia ON plants.itemId=itemEncyclopedia.itemId INNER JOIN plantEncyclopedia ON itemEncyclopedia.itemId=plantEncyclopedia.itemId WHERE userId = %s;"
         mycursor.execute(sql, (userId,))
         userPlants = mycursor.fetchall()
-        print(userPlants)
         resp = make_response((jsonify(userPlants)))
         resp.headers.add("Access-Control-Allow-Origin", "*")
+        print('successfully got plants')
         return resp
     except:
         return "failed to get plants"
@@ -309,6 +309,18 @@ def sellItem():
 def water():
     userId = request.cookies['userId']
     request_data = request.get_json()
+
+    waterCntSql = "SELECT quantity FROM userItemInventory WHERE itemId=2 AND userId=%s"
+
+    mycursor.execute(waterCntSql, (userId,))
+    waterCnt = mycursor.fetchone()[0]
+    print('water count is: ' + str(waterCnt))
+
+    if waterCnt < 1:
+        print('You do not have water')
+        errorRes = make_response('You do not have the water', 400)
+        return errorRes
+
     updateWater = "UPDATE plants SET lastTimeWatered = NOW() WHERE plantId = %s"
     mycursor.execute(updateWater, (request_data['plantId'],))
     mydb.commit()
@@ -322,20 +334,33 @@ def water():
 
 
 @app.route('/api/grown', methods=['POST'])
+@cross_origin()
 def grown():
+    userId = request.cookies['userId']
     request_data = request.get_json()
-    sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s"
-    mycursor.execute(sql, (request_data['plantId'],))
-    mydb.commit()
+    plantId = request_data['plantId']
+    try:
+        sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s and userId = %s"
+        mycursor.execute(sql, (plantId, userId,))
+        mydb.commit()
+        print(plantId) 
+        print('is okay')
+        resp = make_response((jsonify(plantId)))
+        return resp
+    except:
+        return 'error happened updating grown'
     return 'plant is grown'
 
 
 @app.route('/api/isAlive', methods=['POST'])
 def isAlive():
     request_data = request.get_json()
-    sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
-    mycursor.execute(sql, (request_data['plantId'],))
-    mydb.commit()
+    try:
+        sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
+        mycursor.execute(sql, (request_data['plantId'],))
+        mydb.commit()
+    except:
+        return 'error happened updating alive'
     return 'plant is dead'
 
 

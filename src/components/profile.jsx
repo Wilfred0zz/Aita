@@ -17,7 +17,7 @@ function UserInv () {
 
     return (
         <div className="prof-container">
-            <img style={{height:'200px'}} src='/images/profile.svg'/>
+            <img alt='prof-img' style={{height:'200px'}} src='/images/profile.svg'/>
             <div>
                 { userProf.length !== 0 ? 
                     <div className='prof-cont'>

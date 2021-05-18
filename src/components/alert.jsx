@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function AlertHandler ({ visible, duration, onDurationEnd, children }) {
     const [isVisible, setVisibility] = useState(null);

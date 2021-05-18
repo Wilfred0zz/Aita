@@ -48,7 +48,7 @@ function Login () {
       <div className="LR-header">Login</div>
       <div className="LR-content">
         <div className="LR-image-cnt">
-          <img className='LR-img' src={`/images/plant.svg`} />
+          <img alt='login-img' className='LR-img' src={`/images/plant.svg`} />
         </div>
         <div className="LR-form">
           <div className="LR-form-group">

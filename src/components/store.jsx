@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import Grid from '@material-ui/core/Grid';
 import ImageCatalog from '../assets/imageCatalog';
 
 function Store () {
@@ -54,7 +53,7 @@ function Store () {
             <div className="store-container row">
                 {storeItems.map((item) => (
                     <section key={item[0]} className='store-card-item'>
-                        <img style={{"height": '60px'}}
+                        <img alt='store-item' style={{"height": '60px'}}
                             src={`/images/${ImageCatalog[`${item[0]}`]}`}
                         />
                         <div>{item[1]}</div>

@@ -21,7 +21,7 @@ function Modal(props) {
 
       <ModalContentWrapper ref={modalRef}>
         <section className='modal-header'>
-          <img src={'/images/exit.svg'} 
+          <img alt='exit-img' src={'/images/exit.svg'} 
             style={{height:'30px', padding: '10px'}} 
             className='close-modal-button' 
             onClick={() => modalRef.current.close()}

@@ -23,10 +23,10 @@ function Transactions () {
                     <div>
                         {itemTrans.map((item) => (
                             <section key={item[0]} className='card'>
-                                <img style={{"height": '60px'}}
+                                <img alt='item-trans' style={{"height": '60px'}}
                                     src={`/images/${ImageCatalog[`${item[3]}`]}`}
                                 />
-                                <span>{'Bought ' + item[2] + " " + item[5] + ' on ' + item[4] + ' for ' + item[7]}</span>
+                                <span>{'Bought ' + item[2] + " " + item[5] + ' on ' + item[4] + ' for $' + item[7]}</span>
                             </section>
                         ))} 
                     </div> :

@@ -25,21 +25,20 @@ function UserInv () {
                 { userInv.length !== 0 ? 
                     <div>
                         <div className='card'>
-                            <span style={{paddingLeft: '30%'}}>item</span>
-                            <span style={{paddingRight: '22%'}}>quantity</span>
+                            <span style={{paddingLeft: '39%'}}>item</span>
+                            <span>quantity</span>
                         </div>
                         {userInv.map((item) => (
                             <div key={item[0]}>
                                 {
                                     item[3] >= 1 &&
                                     <div className='card'>
-                                        <img style={{"height": '70px'}}
+                                        <img alt='user-item' style={{"height": '70px'}}
                                             src={`/images/${ImageCatalog[`${item[1]}`]}`}
                                         />
                                         <span>{item[4] + " "}</span>
         
                                         <span>{item[3] + " "}</span>
-                                        <span><button>sell</button></span>
                                     </div>
                                 }
                             </div>
