@@ -339,6 +339,7 @@ def grown():
     userId = request.cookies['userId']
     request_data = request.get_json()
     plantId = request_data['plantId']
+    # return 'fdsfsdf'
     try:
         sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s and userId = %s"
         mycursor.execute(sql, (plantId, userId,))

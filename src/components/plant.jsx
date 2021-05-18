@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Axios, { axios } from "axios";
+import Axios from "axios";
+import axios from "axios";
 import ImageCatalog from '../assets/imageCatalog';
 import Moment from 'react-moment';
 import moment from "moment";
@@ -56,30 +57,9 @@ function Plants () {
         });
     };
 
-    
-    // useEffect(() => {
-    //     // console.log(userPlants)
-    //     const plantStateObj = userPlants.map(plant => {
-    //         return axios.post('/api/grown', { plantId: plant[0] }).then((res) => { return JSON.stringify(res)} ).catch(err => console.log(err));
-    //     })
-    //     console.log(plantStateObj)
-    //     Promise.all(plantStateObj);
-    // }, [userPlants]);
-
-    const stateApiCalls = () => { 
-       
-    }
-
-    const updateState = () => {
-        // // const axiosCall = axios.post('/api/grown', { plantId: 1 });
-        // console.log(stateApiCalls())
-        // axios.all(stateApiCalls()).then(res => console.log(res))
-    }
-
     return (
         <div className="plant-container">
             <div>
-                <button onClick={stateApiCalls}>dsssad</button>
                 { userPlants.length !== 0 ? 
                     <div className='plant-container row'>
                         {userPlants.map((plant) => (
