@@ -235,54 +235,60 @@ def buyItem():
 def plantSeed():
     userId = request.cookies['userId']
     request_data = request.get_json()
-    addToPlants = "INSERT INTO plants(itemId, userId, name) VALUES (%s, %s, %s)"
-    mycursor.execute(addToPlants, (request_data['itemId'], userId, request_data['plantName']))
-    mydb.commit()
 
     seedCntSql = "SELECT quantity FROM userItemInventory WHERE itemId=%s AND userId=%s"
     potCntSql = "SELECT quantity FROM userItemInventory WHERE itemId=1 AND userId=%s"
     soilCntSql = "SELECT quantity FROM userItemInventory WHERE itemId=3 AND userId=%s"
 
     mycursor.execute(seedCntSql, (request_data['itemId'], userId,))
-    seedCnt = mycursor.fetchone()[0]
+    seedCnt = mycursor.fetchone()
     print('seed count is: ' + str(seedCnt))
 
-    if seedCnt < 1:
-        print('You do not have the seed')
-        errorRes = make_response('You do not have the seed', 400)
-        return errorRes
-
     mycursor.execute(potCntSql, (userId,))
-    potCnt = mycursor.fetchone()[0]
+    potCnt = mycursor.fetchone()
     print('pot count is: ' + str(potCnt))
 
-    if potCnt < 1:
-        print('You do not have a pot')
-        errorRes = make_response('You do not have a pot', 400)
-        return errorRes
-
     mycursor.execute(soilCntSql, (userId,))
-    soilCnt = mycursor.fetchone()[0]
+    soilCnt = mycursor.fetchone()
     print('soil count is: ' + str(soilCnt))
 
-    if soilCnt < 1:
-        print('You do not have soil')
-        errorRes = make_response('You do not have soil', 400)
+    if(seedCnt is None or potCnt is None or soilCnt is None):
+        print('You do not have all the items needed to plant.')
+        errorRes = make_response('You do not have all the items needed to plant.', 400)
         return errorRes
+    else:
+        mycursor.execute(seedCntSql, (request_data['itemId'], userId,))
+        seedCnt = mycursor.fetchone()[0]
+        print('seed count is: ' + str(seedCnt))
 
-    updateUserInventoryPot = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId=1 AND userId=%s"
-    mycursor.execute(updateUserInventoryPot, (userId,))
-    mydb.commit()
-    updateUserInventorySoil = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId=3 AND userId=%s"
-    mycursor.execute(updateUserInventorySoil, (userId,))
-    mydb.commit()
-    updateUserInventorySeed = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId=%s AND userId=%s"
-    mycursor.execute(updateUserInventorySeed, (request_data['itemId'], userId,))
-    mydb.commit()
+        mycursor.execute(potCntSql, (userId,))
+        potCnt = mycursor.fetchone()[0]
+        print('pot count is: ' + str(potCnt))
 
+        mycursor.execute(soilCntSql, (userId,))
+        soilCnt = mycursor.fetchone()[0]
+        print('soil count is: ' + str(soilCnt))
+
+        if (seedCnt < 1 or potCnt < 1 or soilCnt < 1):
+            print('You do not have all the items needed to plant.')
+            errorRes = make_response('You do not have all the items needed to plant.', 400)
+            return errorRes
+        else:
+            addToPlants = "INSERT INTO plants(itemId, userId, name) VALUES (%s, %s, %s)"
+            mycursor.execute(addToPlants, (request_data['itemId'], userId, request_data['plantName']))
+            mydb.commit()
+            updateUserInventoryPot = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId=1 AND userId=%s"
+            mycursor.execute(updateUserInventoryPot, (userId,))
+            mydb.commit()
+            updateUserInventorySoil = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId=3 AND userId=%s"
+            mycursor.execute(updateUserInventorySoil, (userId,))
+            mydb.commit()
+            updateUserInventorySeed = "UPDATE userItemInventory SET quantity = quantity - 1 WHERE itemId=%s AND userId=%s"
+            mycursor.execute(updateUserInventorySeed, (request_data['itemId'], userId,))
+            mydb.commit()
     successRes = "successfully planted %s" % (request_data['plantName'])
     resp = make_response((jsonify(successRes)))
-    return resp
+    return 'fsfds'
 
 
 @app.route('/api/sellPlant', methods=['POST'])
