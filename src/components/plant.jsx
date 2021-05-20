@@ -33,6 +33,7 @@ function Plants() {
     }
     await Axios.post("/api/grown", { plantId: plantGrown });
     await Axios.post("/api/isAlive", { plantId: plantDied });
+    await Axios.get("/api/getPlants");
   }, []);
 
   const sellItem = (plantId, itemId) => {
@@ -75,34 +76,30 @@ function Plants() {
       });
   };
 
-  console.log(Axios);
-  useEffect(() => {
-    // console.log(userPlants)
-  }, [userPlants]);
-
-  const stateApiCalls = () => {};
-
-  const updateState = () => {
-    // // const axiosCall = axios.post('/api/grown', { plantId: 1 });
-    // console.log(stateApiCalls())
-    // axios.all(stateApiCalls()).then(res => console.log(res))
-  };
-
   return (
     <div className="plant-container">
       <div>
-        <button onClick={stateApiCalls}>dsssad</button>
         {userPlants.length !== 0 ? (
           <div className="plant-container row">
             {userPlants.map((plant) => (
               <div key={plant[0]}>
                 {plant[7] !== 1 && (
                   <div className="plant-card">
-                    <img
-                      alt="plant-img"
-                      style={{ height: "70px" }}
-                      src={`/images/${ImageCatalog[`${plant[1]}`]}`}
-                    />
+                    {
+                        plant[5] === 0 ? (
+                            <img
+                                alt="dead-plant-img"
+                                style={{ height: "70px" }}
+                                src={`/images/${ImageCatalog[0]}`}
+                            />
+                        ) : ( <img
+                            alt="plant-img"
+                            style={{ height: "70px" }}
+                            src={`/images/${ImageCatalog[`${plant[1]}`]}`}
+                          />)
+                    }
+                    <div> {plant[5]} </div>
+                    <div> {plant[6]} </div>
                     <div>
                       {"Name: "}
                       {plant[8] + " "}

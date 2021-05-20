@@ -169,7 +169,7 @@ def getPlantTrans():
 def getItemTrans():
     try: 
         userId = request.cookies['userId']
-        sql = "SELECT itemTransactions.*, itemEncyclopedia.name, itemEncyclopedia.price, ROUND(itemEncyclopedia.price * itemTransactions.quantity, 2) as amount FROM itemTransactions INNER JOIN itemEncyclopedia ON itemTransactions.itemId=itemEncyclopedia.itemId WHERE itemTransactions.userId = %s"
+        sql = "SELECT itemTransactions.*, itemEncyclopedia.name, itemEncyclopedia.price, ROUND(itemEncyclopedia.price * itemTransactions.quantity, 2) as amount FROM itemTransactions INNER JOIN itemEncyclopedia ON itemTransactions.itemId=itemEncyclopedia.itemId WHERE itemTransactions.userId = %s ORDER BY itemTransactions.dateBought DESC"
         mycursor.execute(sql, (userId,))
         itemTrans = mycursor.fetchall()
         print(itemTrans)
@@ -341,8 +341,8 @@ def grown():
     sql = "UPDATE plants SET isGrown = 1 WHERE plantId = %s and userId = %s"
     mycursor.executemany(sql, data,)
     mydb.commit()
+    print('this is grown route: ')
     print(request_data)
-    print('is okay')
     resp = make_response((jsonify(plantIds)))
     return resp
     return 'plant is grown'
@@ -356,8 +356,8 @@ def isAlive():
     sql = "UPDATE plants SET isAlive = 0 WHERE plantId = %s"
     mycursor.executemany(sql, data,)
     mydb.commit()
+    print('this is isAlive route: ')
     print(request_data)
-    print('is okay')
     resp = make_response((jsonify(plantIds)))
     return resp
 

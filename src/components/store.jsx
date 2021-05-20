@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import ImageCatalog from '../assets/imageCatalog';
+import Button from '@material-ui/core/Button';
 
 function Store () {
     const [storeItems, setStoreItems] = useState([]);
@@ -61,9 +62,9 @@ function Store () {
                         <div>{item[3]}</div>
                         <div>{item[4]}</div>
                         <span>
-                            <button onClick={(e)=> decrement(item[0])}>-</button>
+                            <button style={{margin:'.5em'}} onClick={(e)=> decrement(item[0])}>-</button>
                             {arrItems[item[0]]}
-                            <button onClick={(e)=> increment(item[0])}>+</button>
+                            <button style={{margin:'.5em'}} onClick={(e)=> increment(item[0])}>+</button>
                         </span>
                         <button onClick={(e) => buyItem(item[0], arrItems[item[0]])}>buy</button> 
                     </section>

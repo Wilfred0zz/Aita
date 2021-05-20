@@ -2,21 +2,19 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
-    // background-color: blue;
-    // padding-top: 3%;
     height:100%;
-    // padding: 2%;
 
     &.row{
         overflow-y: visible;
         display: flex;
         flex-wrap: wrap;
         width: 100%;
+        overflow-x: hidden;
     }
 
     .plant-card{
         margin: 10px;
-        padding: 17px;
+        padding: 30px;
         background-color: rgba(255, 255, 255, 0.95);
         border-radius: 20px;
     }
