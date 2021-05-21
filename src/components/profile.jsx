@@ -25,7 +25,7 @@ function UserInv () {
                             <div key={item[0]}>
                                 <div> {'Username: '}{item[1]} </div>
                                 <div> {'Balance: '}{item[2]} </div>
-                                <div> {'Number of plants sold: '}{item[3]} </div>
+                                {/* <div> {'Number of plants sold: '}{item[3]} </div> */}
                             </div>
                         ))} 
                     </div> :

@@ -37,7 +37,7 @@ function Plants() {
   }, []);
 
   const sellItem = (plantId, itemId) => {
-    alert("plantId: " + plantId + " itemId: " + itemId);
+    // alert("plantId: " + plantId + " itemId: " + itemId);
     Axios({
       method: "POST",
       data: {
@@ -57,7 +57,7 @@ function Plants() {
   };
 
   const waterPlant = (plantId, itemId) => {
-    alert("plantId: " + plantId + " itemId: " + itemId);
+    // alert("plantId: " + plantId + " itemId: " + itemId);
     Axios({
       method: "POST",
       data: {
@@ -98,8 +98,8 @@ function Plants() {
                             src={`/images/${ImageCatalog[`${plant[1]}`]}`}
                           />)
                     }
-                    <div> {plant[5]} </div>
-                    <div> {plant[6]} </div>
+                    {/* <div> {plant[5]} </div>
+                    <div> {plant[6]} </div> */}
                     <div>
                       {"Name: "}
                       {plant[8] + " "}
@@ -129,12 +129,19 @@ function Plants() {
                       {plant[4]}
                     </Moment>
                     <div>
+                      <span>Selling Price: $</span>
+                      {plant[12]}
+                    </div>
+                    <div>
                       <button onClick={(e) => waterPlant(plant[0], plant[1])}>
                         water
                       </button>
-                      <button onClick={(e) => sellItem(plant[0], plant[1])}>
-                        sell
-                      </button>
+                      { plant[5] === 1 && plant[6] === 1 &&
+                        <button onClick={(e) => sellItem(plant[0], plant[1])}>
+                          sell
+                        </button>
+                      }
+
                     </div>
                     {/* {dt} */}
                   </div>

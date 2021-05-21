@@ -13,6 +13,7 @@ function Store() {
 
   const duration = 3500;
   const [visible, setAlertVisibility] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
 
   useEffect(() => {
     Axios({
@@ -50,10 +51,15 @@ function Store() {
     })
       .then((res) => {
         console.log(res);
+        if (res.data === 'not enough balance'){
+          setIsSuccess(false);
+        }
+        setAlertVisibility(true);
       })
       .catch((error) => {
-        setAlertVisibility(true);
         console.log(error.response);
+        setIsSuccess(false);
+        setAlertVisibility(true);
       });
   };
 
@@ -64,7 +70,12 @@ function Store() {
           duration={duration}
           onDurationEnd={setAlertVisibility}
         >
-          <Alert severity="error"> Not Enough Money In Account Balance!</Alert>
+          {
+            isSuccess ?
+            <Alert severity="success"> You have successfully bought the item! </Alert>
+            :
+            <Alert severity="error"> Not Enough Money In Account Balance!</Alert>
+          }
         </AlertHandler>
       <div className="store-container row">
         {storeItems.map((item) => (

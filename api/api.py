@@ -123,7 +123,7 @@ def getProfile():
 def getPlants():
     try: 
         userId = request.cookies['userId']
-        sql = "SELECT plants.*, itemEncyclopedia.name, plantEncyclopedia.timeTakesToGrow, plantEncyclopedia.waterInterval FROM plants INNER JOIN itemEncyclopedia ON plants.itemId=itemEncyclopedia.itemId INNER JOIN plantEncyclopedia ON itemEncyclopedia.itemId=plantEncyclopedia.itemId WHERE userId = %s;"
+        sql = "SELECT plants.*, itemEncyclopedia.name, plantEncyclopedia.timeTakesToGrow, plantEncyclopedia.waterInterval, plantEncyclopedia.sellingPrice FROM plants INNER JOIN itemEncyclopedia ON plants.itemId=itemEncyclopedia.itemId INNER JOIN plantEncyclopedia ON itemEncyclopedia.itemId=plantEncyclopedia.itemId WHERE userId = %s order by plantId DESC;"
         mycursor.execute(sql, (userId,))
         userPlants = mycursor.fetchall()
         resp = make_response((jsonify(userPlants)))

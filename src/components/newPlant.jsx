@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import ImageCatalog from '../assets/imageCatalog';
 import Modal from '@material-ui/core/Modal';
+import Alert from '@material-ui/lab/Alert';
+import AlertHandler from './alert';
 
 function NewPlant () {
     const [userInv, setUserInv] = useState([]);
@@ -9,6 +11,8 @@ function NewPlant () {
     const [seedId, setSeedId] = useState(0);
     const [seedType, setSeedType] = useState('');
     const [plantName, setPlantName] = useState('');
+    const duration = 3500;
+    const [visible, setAlertVisibility] = useState(false);
     
     const handleOpen = (seedId, seedType) => {
         // alert(itemId);
@@ -22,13 +26,22 @@ function NewPlant () {
     };
 
     const body = (
-        <div style={{background: 'white'}}>
+        <div className='confirm-plant-container'>
+             <AlertHandler
+            visible={visible}
+            duration={duration}
+            onDurationEnd={setAlertVisibility}
+            >
+                <Alert severity='error'> You do not have all the tools to plant </Alert>
+            </AlertHandler>
+            <div className='confirm-plant-container-content'>
                 <img alt='new-plant-img' style={{"height": '70px'}}
-                src={`/images/${ImageCatalog[`${seedId}`]}`}
-            />
-            <div> Confirm to plant {seedType} </div>
-            <div> What would you like to name it? </div> <input onChange={e => setPlantName(e.target.value)} ></input>
-            <button onClick={(e) => plantSeed(seedId, plantName)}>Plant it!</button>
+                    src={`/images/${ImageCatalog[`${seedId}`]}`}
+                />
+                <div> Confirm to plant {seedType} </div>
+                <div> What would you like to name it? </div> <input onChange={e => setPlantName(e.target.value)} ></input>
+                <button onClick={(e) => plantSeed(seedId, plantName)}>Plant it!</button>
+            </div>
         </div>
     );
 
@@ -47,6 +60,7 @@ function NewPlant () {
           window.location.reload();
         }).catch(error => {
             console.log(error.response);
+            setAlertVisibility(true)
         });
     };
 
@@ -77,7 +91,7 @@ function NewPlant () {
                             <div key={item[0]}>
                                 {/* we do not render pots, soil, or water because we can't plant them */}
                                 {
-                                    item[1] !== 1 && item[1] !== 2 && item[1] !== 3 &&
+                                    item[1] !== 1 && item[1] !== 2 && item[1] !== 3 && item[3] > 0 &&
                                     <div className='card'>
                                         <img alt='seeds-img' style={{"height": '70px'}}
                                             src={`/images/${ImageCatalog[`${item[1]}`]}`}

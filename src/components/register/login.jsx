@@ -45,6 +45,7 @@ function Login () {
         >
           <Alert severity='error'> You're login info is incorrect </Alert>
         </AlertHandler>
+      <h1>Aita</h1>
       <div className="LR-header">Login</div>
       <div className="LR-content">
         <div className="LR-image-cnt">

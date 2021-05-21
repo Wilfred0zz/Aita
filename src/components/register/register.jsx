@@ -49,6 +49,7 @@ function Register () {
             : <Alert severity='error'> Unable to register, try a different username </Alert>
           }   
       </AlertHandler>
+      <h1>Aita</h1>
       <div className="LR-header">Register</div>
       <div className="LR-content">
         <div className="LR-image-cnt">
@@ -63,13 +64,13 @@ function Register () {
           </div>
           <div className="LR-form-group">
             <label className='LR-label' htmlFor="password">Password</label>
-            <input className='LR-input' type="text" name="password" placeholder="password" 
+            <input className='LR-input' type="password" name="password" placeholder="password" 
             onChange={(e) => setRegisterPassword(e.target.value)}
             />
           </div>
           <div className="LR-form-group">
             <label className='LR-label' htmlFor="password">Confirm Password</label>
-            <input className='LR-input' type="text" name="password" placeholder="password" />
+            <input className='LR-input' type="password" name="password" placeholder="password" />
           </div>
         </div>
       </div>
