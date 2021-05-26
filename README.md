@@ -15,4 +15,5 @@ Aita is a single player plant management game where a user will purchase seeds a
 - source venv/bin/activate
 -  python3 ./api.py
 
+**Demo**
 ![Aita Demo](Aita-Demo.gif)
