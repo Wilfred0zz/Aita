@@ -19,6 +19,7 @@ Aita is a single player plant management game where a user will purchase seeds a
 - Login & Register
 - Buying of seeds & items
 - Profile
+- User inventory
 - Transactions of items
 - Plant growing according to system time/Plant state management
 - Water Tracking
